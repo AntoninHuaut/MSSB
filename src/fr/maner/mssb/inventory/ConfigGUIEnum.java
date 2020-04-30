@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maner.mssb.factory.ItemFactory;
+import fr.maner.mssb.factory.PotionFactory;
 import fr.maner.mssb.factory.SkullFactory;
 import fr.maner.mssb.inventory.init.InvGUI.InvGUIAction;
 import fr.maner.mssb.utils.Heads;
@@ -22,8 +23,8 @@ public enum ConfigGUIEnum {
 					.build()),
 
 	KB_MULTIPLIER(0, new ItemFactory(Material.FISHING_ROD).addLore(getDoubleInfos()).build()),
-	REGEN_KB(2, ItemFactory.createPotion(Color.AQUA).addItemFlags(ItemFlag.HIDE_POTION_EFFECTS).addLore("&7Réduction hors combat").addLore(getDoubleInfos()).buildPotion()),
-	REGEN_HEALTH(2, ItemFactory.createPotion(Color.FUCHSIA).addItemFlags(ItemFlag.HIDE_POTION_EFFECTS).addLore("&7Régénération hors combat").addLore(getDoubleInfos()).buildPotion()),
+	REGEN_KB(2, new PotionFactory(Color.AQUA).addItemFlags(ItemFlag.HIDE_POTION_EFFECTS).addLore("&7Réduction hors combat").addLore(getDoubleInfos()).build()),
+	REGEN_HEALTH(2, new PotionFactory(Color.FUCHSIA).addItemFlags(ItemFlag.HIDE_POTION_EFFECTS).addLore("&7Régénération hors combat").addLore(getDoubleInfos()).build()),
 
 	GEND_KILL(7, new ItemFactory(SkullFactory.buildFromBase64(Heads.DEATH)).setName("&aLimitation par kill")
 			.addLore("&7Lorsqu'un joueur atteint le nombre de kill défini", "&7Le jeu se termine")

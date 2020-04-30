@@ -24,6 +24,7 @@ public class InGameState extends GameState {
 	
 	private HashMap<UUID, Integer> nbKills = new HashMap<UUID, Integer>();
 	private HashMap<UUID, Integer> nbDeaths = new HashMap<UUID, Integer>();
+	@SuppressWarnings("unused")
 	private long currentTime;
 
 	public InGameState(GameData gameData, MapData mapData) {
@@ -43,6 +44,8 @@ public class InGameState extends GameState {
 				nbKills.put(p.getUniqueId(), 0);
 			}
 		});
+		
+		EntityManager.getInstance().getPlayableEntityList(getGameData()).forEach(pEntity -> pEntity.initEntity());
 	}
 
 	@Override

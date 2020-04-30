@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import fr.maner.mssb.entity.list.RandomEntity;
 import fr.maner.mssb.entity.list.SpectatorEntity;
+import fr.maner.mssb.entity.list.playable.WolfEntity;
 import fr.maner.mssb.game.GameData;
 
 public class EntityManager {
@@ -30,7 +31,7 @@ public class EntityManager {
 	public List<PlayableEntity> getPlayableEntityList(GameData gameData) {
 		List<PlayableEntity> playableEntityList = new ArrayList<PlayableEntity>();
 		
-		// TODO
+		playableEntityList.add(new WolfEntity(gameData));
 		
 		return playableEntityList;
 	}

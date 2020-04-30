@@ -1,5 +1,6 @@
 package fr.maner.mssb.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.GameMode;
@@ -11,19 +12,22 @@ import fr.maner.mssb.game.GameData;
 public abstract class PlayableEntity extends EntityClass {
 	
 	private ItemStack mainWeapon;
-	private List<ItemStack> armors;
+	private List<ItemStack> armors = new ArrayList<ItemStack>();
 
 	public PlayableEntity(GameData gameData, String color, String name, String base64) {
 		super(gameData, color, name, base64);
 	}
 	
-	
 	@Override
 	public void initPlayer(Player p) {
 		p.setGameMode(GameMode.SURVIVAL);
+		
+		p.getInventory().setItem(0, mainWeapon);
+		p.getInventory().setArmorContents(armors.toArray(new ItemStack[0]));
 	}
 	
 	public abstract double getWeaponDamage();
+	public abstract void initEntity();
 	
 	public void setMainWeapon(ItemStack mainWeapon) {
 		this.mainWeapon = mainWeapon;
@@ -38,6 +42,8 @@ public abstract class PlayableEntity extends EntityClass {
 	}
 
 	public void setArmors(List<ItemStack> armors) {
-		this.armors = armors;
+		this.armors.clear();
+		this.armors.addAll(armors);
+		this.armors.add(getItemDisplay());
 	}
 }

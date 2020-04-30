@@ -11,27 +11,23 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 
 public class ItemFactory {
 
-	private ItemStack item;
+	protected ItemStack item;
 
-	private int amount = 1;
-	private String name;
-	private boolean unbreakable = false;
-	
-	private Color potionColor;
-	
-	private List<String> lores = new ArrayList<String>();
-	private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
-	private Set<ItemFlag> itemFlags = new HashSet<ItemFlag>();
+	protected int amount = 1;
+	protected String name;
+	protected boolean unbreakable = false;
+		
+	protected List<String> lores = new ArrayList<String>();
+	protected Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+	protected Set<ItemFlag> itemFlags = new HashSet<ItemFlag>();
 
 	public ItemFactory(Material material) {
 		this.item = new ItemStack(material);
@@ -86,11 +82,6 @@ public class ItemFactory {
 		return this;
 	}
 
-	public ItemFactory setPotionColor(Color color) {
-		this.potionColor = color;
-		return this;
-	}
-
 	public ItemStack build() {
 		item.setAmount(amount);
 		item.addEnchantments(enchantments);
@@ -107,22 +98,7 @@ public class ItemFactory {
 		return item;
 	}
 
-	public ItemStack buildPotion() {
-		build();
-		if (!(item.getItemMeta() instanceof PotionMeta)) return null;
-		
-		PotionMeta meta = (PotionMeta) item.getItemMeta();
-		meta.setColor(potionColor);
-		item.setItemMeta(meta);
-
-		return item;
-	}
-
 	private String convert(String s) {
 		return ChatColor.translateAlternateColorCodes('&', s);
-	}
-
-	public static ItemFactory createPotion(Color color) {
-		return new ItemFactory(Material.POTION).setPotionColor(color);
 	}
 }
