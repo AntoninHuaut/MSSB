@@ -1,10 +1,16 @@
 package fr.maner.mssb.listener;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.function.Function;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.Fence;
+import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,7 +39,8 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerExpChange(PlayerExpChangeEvent e) {
-		if (gameData.getGameConfig().getGameType().isKBMode()) return;
+		if (gameData.getGameConfig().getGameType().isKBMode())
+			return;
 
 		e.setAmount(0);
 		e.getPlayer().setExp(0F);
@@ -55,7 +62,7 @@ public class PlayerListener implements Listener {
 
 		if (!gameData.getState().hasGameStart())
 			colorMessage = "f";
-		else 
+		else
 			colorMessage = entityClass == null || !entityClass.isPlayableClass() ? "7" : "f";
 
 		e.setFormat(String.format("%s §b%s §e» §%s%s", prefix, p.getName(), colorMessage, e.getMessage()));
@@ -79,7 +86,8 @@ public class PlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onItemsDrop(PlayerDropItemEvent e) {
-		if (gameData.getGameConfig().isBuildMode()) return;
+		if (gameData.getGameConfig().isBuildMode())
+			return;
 
 		e.setCancelled(true);
 	}
@@ -89,17 +97,29 @@ public class PlayerListener implements Listener {
 		e.setCancelled(true);
 	}
 
-	private List<Material> cancelInteract = Arrays.asList(Material.CHEST, Material.TRAPPED_CHEST, Material.FURNACE, Material.CRAFTING_TABLE, Material.ANVIL);
+	private Set<Material> cancelInteract = EnumSet.of(Material.CHEST, Material.TRAPPED_CHEST, Material.FURNACE,
+			Material.CRAFTING_TABLE, Material.ANVIL, Material.SMOKER, Material.GRINDSTONE, Material.BARREL,
+			Material.HOPPER, Material.DISPENSER, Material.DROPPER, Material.DAYLIGHT_DETECTOR, Material.ENDER_CHEST,
+			Material.NOTE_BLOCK, Material.ENDER_CHEST, Material.CRAFTING_TABLE, Material.LOOM,
+			Material.CARTOGRAPHY_TABLE, Material.BLAST_FURNACE);
+	private final Function<Block, Boolean> CHECK_BAN = block -> {
+		BlockData blockData = block.getBlockData();
+		return blockData instanceof Bed || blockData instanceof ShulkerBox || blockData instanceof Fence || blockData instanceof TrapDoor;
+	};
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		if (gameData.getGameConfig().isBuildMode()) return;
+		if (gameData.getGameConfig().isBuildMode())
+			return;
 
 		Block b = e.getClickedBlock();
 
-		if (b == null) return;
+		if (b == null)
+			return;
 
-		if (cancelInteract.contains(b.getType()) || (e.getAction().equals(Action.PHYSICAL) && b.getType().equals(Material.FARMLAND)))
+		if (cancelInteract.contains(b.getType())
+				|| (e.getAction().equals(Action.PHYSICAL) && b.getType().equals(Material.FARMLAND))
+				|| CHECK_BAN.apply(b))
 			e.setCancelled(true);
 	}
 
