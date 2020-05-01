@@ -49,6 +49,8 @@ public class KBMode extends GameType {
 	
 	@Override
 	public void modifyDamage(EntityDamageEvent e) {
+		if (e.isCancelled()) return;
+		
 		Player victim = (Player) e.getEntity();
 		
 		double damageGet = (double) e.getFinalDamage() * getKbMultiplier();

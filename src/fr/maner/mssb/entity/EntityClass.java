@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import fr.maner.mssb.factory.ItemFactory;
 import fr.maner.mssb.factory.SkullFactory;
 import fr.maner.mssb.game.GameData;
+import fr.maner.mssb.type.state.InGameState;
 
 public abstract class EntityClass {
 	
@@ -41,6 +42,12 @@ public abstract class EntityClass {
 	public boolean isPlayableClass() { return this instanceof PlayableEntity; }
 	
 	public abstract void initPlayer(Player p);
+	
+	public void teleportOnMap(Player p) {
+		if (!(getGameData().getState() instanceof InGameState)) return;
+		
+		p.teleport(((InGameState) getGameData().getState()).getMapData().getLoc());
+	}
 	
 	public GameData getGameData() {
 		return gameData;

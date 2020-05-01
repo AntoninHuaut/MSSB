@@ -5,67 +5,67 @@ import org.bukkit.event.HandlerList;
 
 import fr.maner.mssb.MSSB;
 import fr.maner.mssb.runnable.ItemEffectRun;
+import fr.maner.mssb.runnable.StartRun;
 import fr.maner.mssb.type.state.GameState;
-import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.type.state.LobbyState;
 import fr.maner.mssb.utils.map.MapData;
 
 public class GameData {
-	
+
 	private transient MSSB pl;
-	
+
 	public GameData(MSSB pl) {
 		this.pl = pl;
 		this.config = new GameConfig(pl);
-		setGameState(new LobbyState(this));
+		setGameState(new LobbyState(this), true);
 	}
-	
+
 	private GameState state;
 	private GameConfig config;
-	
+
 	private ItemEffectRun itemEffectRun;
-	
+
 	public void startGame(MapData mapData) {
 		if (state.hasGameStart()) return;
-		
+
 		getGameConfig().setBuildMode(false);
-		createRunnable();
-		setGameState(new InGameState(this, mapData));
+		new StartRun(pl, this, mapData);
 	}
 
 	public void stopGame() {
 		if (!state.hasGameStart()) return;
-		
-		setGameState(new LobbyState(this));
-		
+
+		setGameState(new LobbyState(this), true);
+
 		// TODO
 	}
-	
-	private void createRunnable() {
+
+	public void createPreRunnable() {
 		if (itemEffectRun != null) itemEffectRun.cancel();
 		itemEffectRun = new ItemEffectRun(pl);
 	}
-	
-	private void setGameState(GameState newState) {
+
+	public void setGameState(GameState newState, boolean initPlayer) {
 		HandlerList.unregisterAll(state);
 		this.state = newState;
 		pl.getServer().getPluginManager().registerEvents(newState, pl);
-		
-		Bukkit.getOnlinePlayers().forEach(p -> newState.initPlayer(p));
+
+		if (initPlayer)
+			Bukkit.getOnlinePlayers().forEach(p -> newState.initPlayer(p));
 	}
-	
+
 	public ItemEffectRun getItemEffectRun() {
 		return itemEffectRun;
 	}
-	
+
 	public GameState getState() {
 		return state;
 	}
-	
+
 	public GameConfig getGameConfig() {
 		return config;
 	}
-	
+
 	public MSSB getPlugin() {
 		return pl;
 	}

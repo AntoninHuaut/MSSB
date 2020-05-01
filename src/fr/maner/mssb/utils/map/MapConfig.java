@@ -29,34 +29,43 @@ public class MapConfig extends JsonConfig {
 		JsonArray array = getJsonArray();
 
 		for (JsonElement element : array) {
-			if (!element.isJsonObject()) return;
+			if (!element.isJsonObject())
+				return;
 
 			JsonObject mapObj = element.getAsJsonObject();
-			
+
 			JsonElement itemElement = get(mapObj, "item");
 			JsonElement locElement = get(mapObj, "loc");
-			if (!itemElement.isJsonObject() || !locElement.isJsonObject()) return;
-			
+			if (!itemElement.isJsonObject() || !locElement.isJsonObject())
+				return;
+
 			JsonObject itemObj = itemElement.getAsJsonObject();
 			JsonObject locObj = locElement.getAsJsonObject();
-			
+
 			Location loc = new Location(world, getDouble(locObj, "x"), getDouble(locObj, "y"), getDouble(locObj, "z"),
 					getFloat(locObj, "yaw"), getFloat(locObj, "pitch"));
 			loc.add(0.5, 0, 0.5);
+
+			MapData mapData = new MapData().setItem(getString(itemObj, "name"), getString(itemObj, "material"),
+					getString(itemObj, "opt_SkullData"), getInt(itemObj, "minY"), getInt(itemObj, "maxY"),
+					getInt(itemObj, "radius")).setLoc(loc);
 			
-			MapData mapData = new MapData().setItem(getString(itemObj, "name"), getString(itemObj, "material"), getString(itemObj, "opt_SkullData")).setLoc(loc);
 			mapDataList.add(mapData);
 		}
 	}
-	
+
 	public List<MapData> getMapData() {
 		return mapDataList;
 	}
-	
+
+	private int getInt(JsonObject obj, String key) {
+		return get(obj, key).getAsInt();
+	}
+
 	private String getString(JsonObject obj, String key) {
 		return get(obj, key).getAsString();
 	}
-	
+
 	private double getDouble(JsonObject obj, String key) {
 		return get(obj, key).getAsDouble();
 	}

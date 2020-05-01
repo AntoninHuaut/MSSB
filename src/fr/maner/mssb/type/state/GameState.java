@@ -1,6 +1,7 @@
 package fr.maner.mssb.type.state;
 
 import org.bukkit.GameMode;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,8 +12,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import fr.maner.mssb.game.GameData;
 
 public abstract class GameState implements Listener {
-	
-	private final int Y_LIMIT = 110;
 	
 	private GameData gameData;
 	
@@ -33,6 +32,7 @@ public abstract class GameState implements Listener {
 		p.setFallDistance(0F);
 		p.setLevel(0);
 		p.setExp(0F);
+		p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
 		p.setGameMode(GameMode.SURVIVAL);
 	}
 
@@ -51,7 +51,7 @@ public abstract class GameState implements Listener {
 
 		Player p = e.getPlayer();
 
-		if (p.getLocation().getBlockY() < Y_LIMIT)
+		if (p.getLocation().getBlockY() < getMinY())
 			this.playerBelowYLimit(p);
 	}
 	
@@ -62,4 +62,6 @@ public abstract class GameState implements Listener {
 		
 		this.onPlayerJoin(e.getPlayer());
 	}
+	
+	public abstract int getMinY();
 }

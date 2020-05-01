@@ -1,13 +1,16 @@
 [{
     "item": {
-        "name": "HubMap",
-        "material": "STONE",
-        "opt_SkullData": ""
+        "name": "Freeze25",
+        "material": "BRICKS",
+        "opt_SkullData": "",
+        "minY": 100,
+        "maxY": 255,
+        "radius": 32
     },
     "loc": {
-        "x": 0,
-        "y": 129,
-        "z": 0,
+        "x": -2054,
+        "y": 108,
+        "z": -2004,
         "pitch": 0,
         "yaw": 0
     }

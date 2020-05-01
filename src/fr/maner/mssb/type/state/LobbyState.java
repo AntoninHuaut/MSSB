@@ -18,6 +18,8 @@ import fr.maner.mssb.utils.specialloc.SpecialLocEnum;
 
 public class LobbyState extends GameState {
 
+	private final int MIN_Y = 100;
+
 	private ClassGUI classGUI;
 	private ConfigGUI configGUI;
 	private MapGUI mapGUI;
@@ -30,7 +32,7 @@ public class LobbyState extends GameState {
 
 		this.selectorClassIS = new ItemFactory(Material.COMPASS).setName("§eSélecteur de classe").build();
 		this.configGame = new ItemFactory(Material.BLAZE_ROD).setName("§eConfigurer la partie").build();
-		
+
 		this.classGUI = new ClassGUI(gameData);
 		this.configGUI = new ConfigGUI(gameData);
 		this.mapGUI = new MapGUI(gameData, MapGUI.calculInvSize(gameData.getGameConfig().getMapConfig().getMapData()));
@@ -40,14 +42,14 @@ public class LobbyState extends GameState {
 	@Override
 	public void initPlayer(Player p) {
 		super.initPlayer(p);
-		
+
 		if (p.hasPermission("mssb.config")) {
 			p.getInventory().setItem(3, selectorClassIS);
 			p.getInventory().setItem(5, configGame);
 		}
 		else
 			p.getInventory().setItem(4, selectorClassIS);
-		
+
 		getGameData().getGameConfig().getSpecialLogConfig().tpPlayer(p, SpecialLocEnum.LOBBY);
 	}
 
@@ -67,7 +69,7 @@ public class LobbyState extends GameState {
 	public void onPlayerDamage(EntityDamageEvent e) {
 		e.setCancelled(true);
 	}
-	
+
 	@Override
 	public void onPlayerJoin(Player p) {
 		Bukkit.getScheduler().runTaskLater(getGameData().getPlugin(), () -> initPlayer(p), 1L);
@@ -77,7 +79,7 @@ public class LobbyState extends GameState {
 	public void playerBelowYLimit(Player p) {
 		initPlayer(p);
 	}
-	
+
 	public void updateUserWithClass() {
 		configGUI.updateUserWithClass();
 	}
@@ -85,5 +87,10 @@ public class LobbyState extends GameState {
 	public void openMapSelectorGUI(Player p) {
 		mapGUI.open(p);
 		p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_HIT, 0.75F, 1F);
+	}
+
+	@Override
+	public int getMinY() {
+		return MIN_Y;
 	}
 }

@@ -13,7 +13,10 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import fr.maner.mssb.entity.EntityClass;
+import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.game.GameData;
+import fr.maner.mssb.type.state.InGameState;
 
 public class MSSBCmd implements CommandExecutor, TabExecutor {
 
@@ -26,6 +29,7 @@ public class MSSBCmd implements CommandExecutor, TabExecutor {
 		this.gameData = gameData;
 		
 		argsMap.put("build", new MSSBArgs("Toggle on/off du mode construction", "mssb.buildmode", true, true, sender -> buildMode(sender)));
+		argsMap.put("rtp", new MSSBArgs("Debug tp random", "mssb.rtp", true, false, sender -> rtp(sender)));
 	}
 
 	@Override
@@ -45,6 +49,20 @@ public class MSSBCmd implements CommandExecutor, TabExecutor {
 		}
 		
 		return false;
+	}
+	
+	private void rtp(CommandSender sender) {
+		if (!(gameData.getState() instanceof InGameState)) {
+			sender.sendMessage(" §6» §cLa partie doit être lancée");
+			return;
+		}
+		
+		Player p = (Player) sender;
+		EntityClass entityClass = EntityManager.getInstance().getClassPlayer(p.getUniqueId());
+		
+		if (entityClass == null) return;
+		
+		entityClass.teleportOnMap(p);
 	}
 	
 	private void buildMode(CommandSender sender) {

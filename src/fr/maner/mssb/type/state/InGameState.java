@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
@@ -19,9 +20,9 @@ import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.utils.map.MapData;
 
 public class InGameState extends GameState {
-	
+
 	private MapData mapData;
-	
+
 	private HashMap<UUID, Integer> nbKills = new HashMap<UUID, Integer>();
 	private HashMap<UUID, Integer> nbDeaths = new HashMap<UUID, Integer>();
 	@SuppressWarnings("unused")
@@ -29,41 +30,47 @@ public class InGameState extends GameState {
 
 	public InGameState(GameData gameData, MapData mapData) {
 		super(gameData);
-		
+
 		this.mapData = mapData;
 		initState();
 	}
-	
+
 	public void initState() {
 		this.currentTime = System.currentTimeMillis();		
 		Bukkit.getOnlinePlayers().forEach(p -> {
 			PlayableEntity playableClass = EntityManager.getInstance().getPlayableClassPlayer(p.getUniqueId());
-			
+
 			if (playableClass != null) {
 				nbDeaths.put(p.getUniqueId(), 0);
 				nbKills.put(p.getUniqueId(), 0);
 			}
 		});
-		
+
 		EntityManager.getInstance().getPlayableEntityList(getGameData()).forEach(pEntity -> pEntity.initEntity());
 	}
 
 	@Override
 	public void initPlayer(Player p) {
 		super.initPlayer(p);
-		
+
 		EntityClass entityClass = EntityManager.getInstance().getClassPlayer(p.getUniqueId());
-		
+
 		if (entityClass == null) {
 			SpectatorEntity spec = new SpectatorEntity(getGameData());
 			entityClass = spec;
 			EntityManager.getInstance().setClassPlayer(p.getUniqueId(), spec);
 		}
-		
+
 		entityClass.initPlayer(p);
-		p.teleport(mapData.getLoc());
+		entityClass.teleportOnMap(p);
 	}
-	
+
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent e) {
+		e.setRespawnLocation(mapData.getLoc());
+		Bukkit.getScheduler().runTaskLater(getGameData().getPlugin(), () -> initPlayer(e.getPlayer()), 1);
+	}
+
 	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerDamage(EntityDamageEvent e) {
 		if (e.isCancelled()) return;
@@ -72,8 +79,10 @@ public class InGameState extends GameState {
 
 		if (!(ent instanceof Player)) return;
 
-		if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID)) 
+		if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
 			((Player) ent).setHealth(0.0D);
+			e.setCancelled(true);			
+		}
 		else 
 			getGameData().getGameConfig().getGameType().modifyDamage(e);
 	}
@@ -87,15 +96,20 @@ public class InGameState extends GameState {
 
 	@Override
 	public void playerBelowYLimit(Player p) {
-		p.getLocation().setY(-100);
+		p.teleport(p.getLocation().subtract(0, 200, 0));
 	}
-	
+
 	@Override
 	public void onPlayerJoin(Player p) {
 		Bukkit.getScheduler().runTaskLater(getGameData().getPlugin(), () -> initPlayer(p), 1L);
 	}
-	
+
 	public MapData getMapData() {
 		return mapData;
+	}
+
+	@Override
+	public int getMinY() {
+		return mapData.getMinY();
 	}
 }
