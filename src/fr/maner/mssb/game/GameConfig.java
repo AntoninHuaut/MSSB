@@ -40,8 +40,6 @@ public class GameConfig {
 	}
 
 	public void setGameEnd(GameEnd gameEnd) {
-		if (gameEnd != null) gameEnd.reset();
-		
 		this.gameEnd = gameEnd;
 	}
 

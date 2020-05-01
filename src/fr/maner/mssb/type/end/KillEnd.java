@@ -1,32 +1,32 @@
 package fr.maner.mssb.type.end;
 
+import fr.maner.mssb.game.GameData;
+import fr.maner.mssb.type.state.InGameState;
+
 public class KillEnd extends GameEnd {
 	
-	private int nbKill;
+	private int nbKillWin;
 	
 	public KillEnd() {
 		setNBKill(10);
 	}
 	
-	@Override
-	public void initGameEnd() {
-		
-	}
-	
 	public void setNBKill(int nbKill) {
 		if (nbKill < 1) return;
-		this.nbKill = nbKill;
+		this.nbKillWin = nbKill;
 	}
 	
 	public void addKill(int nbKill) {
-		this.nbKill += nbKill;
-		if (this.nbKill < 1) setNBKill(1);
+		this.nbKillWin += nbKill;
+		if (this.nbKillWin < 1) setNBKill(1);
 	}
 	
 	public int getNBKill() {
-		return nbKill;
+		return nbKillWin;
 	}
 
 	@Override
-	public void reset() {}
+	public boolean isGameOver(GameData gameData, InGameState inGameState) {
+		return inGameState.getPlayersIGData().entrySet().stream().filter(entry -> entry.getValue().getKill() >= nbKillWin).count() > 0;
+	}
 }

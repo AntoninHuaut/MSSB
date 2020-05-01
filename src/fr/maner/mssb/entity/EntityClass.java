@@ -44,7 +44,7 @@ public abstract class EntityClass {
 	public abstract void initPlayer(Player p);
 	
 	public void teleportOnMap(Player p) {
-		if (!(getGameData().getState() instanceof InGameState)) return;
+		if (!getGameData().getState().hasGameStart()) return;
 		
 		p.teleport(((InGameState) getGameData().getState()).getMapData().getLoc());
 	}

@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.game.GameData;
-import fr.maner.mssb.type.state.InGameState;
 
 public class MSSBCmd implements CommandExecutor, TabExecutor {
 
@@ -52,7 +51,7 @@ public class MSSBCmd implements CommandExecutor, TabExecutor {
 	}
 	
 	private void rtp(CommandSender sender) {
-		if (!(gameData.getState() instanceof InGameState)) {
+		if (!gameData.getState().hasGameStart()) {
 			sender.sendMessage(" §6» §cLa partie doit être lancée");
 			return;
 		}

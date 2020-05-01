@@ -33,7 +33,7 @@ public class MapGUI extends InvGUI {
 			setItem(i, mapData.getIs(), invClick -> selectMap(invClick, mapData));
 		}
 		
-		setItem(size - 4, new ItemFactory(Material.BARRIER).setName("&cAnnuler").build(), invClick -> invClick.getPlayer().closeInventory());
+		setItem(size - 5, new ItemFactory(Material.BARRIER).setName("&cAnnuler").build(), invClick -> invClick.getPlayer().closeInventory());
 	}
 	
 	private void selectMap(InvClickData invClick, MapData mapData) {

@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,6 +27,8 @@ public class LobbyState extends GameState {
 
 	private ItemStack selectorClassIS;
 	private ItemStack configGame;
+	
+	private ItemStack bookResume;
 
 	public LobbyState(GameData gameData) {
 		super(gameData);
@@ -49,15 +52,21 @@ public class LobbyState extends GameState {
 		}
 		else
 			p.getInventory().setItem(4, selectorClassIS);
+		
+		if (bookResume != null)
+			p.getInventory().setItem(0, bookResume);
 
 		getGameData().getGameConfig().getSpecialLogConfig().tpPlayer(p, SpecialLocEnum.LOBBY);
 	}
 
 	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent e) {
+		e.setDeathMessage(null);
+	}
+
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if (getGameData().getGameConfig().isBuildMode()) return;
-
-		e.setCancelled(true);
 
 		ItemStack is = e.getItem();
 
@@ -92,5 +101,13 @@ public class LobbyState extends GameState {
 	@Override
 	public int getMinY() {
 		return MIN_Y;
+	}
+
+	public ItemStack getBookResume() {
+		return bookResume;
+	}
+
+	public void setBookResume(ItemStack bookResume) {
+		this.bookResume = bookResume;
 	}
 }

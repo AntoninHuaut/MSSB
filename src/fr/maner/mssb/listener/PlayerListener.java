@@ -17,7 +17,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -77,11 +76,6 @@ public class PlayerListener implements Listener {
 	public void onPlayerLeave(PlayerQuitEvent e) {
 		e.setQuitMessage(String.format("§8[§c-§8] %s", e.getPlayer().getName()));
 		EntityManager.getInstance().removeClassPlayer(e.getPlayer().getUniqueId());
-	}
-
-	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent e) {
-		e.setDeathMessage(String.format("§c✖  §6%s §eest mort", e.getEntity().getName()));
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
