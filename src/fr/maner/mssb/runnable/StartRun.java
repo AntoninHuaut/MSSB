@@ -65,7 +65,7 @@ public class StartRun implements Runnable {
 		cancel();
 		initPlayer(); // LobbyState
 		
-		gameData.createPreRunnable();
+		gameData.createRunnable();
 		gameData.setGameState(new InGameState(gameData, mapData), false);
 		
 		initPlayer(); // InGameState

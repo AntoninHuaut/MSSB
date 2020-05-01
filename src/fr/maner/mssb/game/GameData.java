@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maner.mssb.MSSB;
 import fr.maner.mssb.factory.BookFactory;
+import fr.maner.mssb.runnable.GameRun;
 import fr.maner.mssb.runnable.ItemEffectRun;
 import fr.maner.mssb.runnable.StartRun;
 import fr.maner.mssb.type.state.GameState;
@@ -29,6 +30,7 @@ public class GameData {
 	private GameConfig config;
 
 	private ItemEffectRun itemEffectRun;
+	private GameRun gameRun;
 
 	public void startGame(MapData mapData) {
 		if (state.hasGameStart())
@@ -57,10 +59,14 @@ public class GameData {
 		});
 	}
 
-	public void createPreRunnable() {
-		if (itemEffectRun != null)
-			itemEffectRun.cancel();
+	public void createRunnable() {
 		itemEffectRun = new ItemEffectRun(pl);
+		gameRun = new GameRun(this);
+	}
+	
+	public void stopRunnable() {
+		itemEffectRun.cancel();
+		gameRun.cancel();
 	}
 
 	public void setGameState(GameState newState, boolean initPlayer) {
@@ -91,7 +97,7 @@ public class GameData {
 	public void checkGameOver() {
 		if (!getState().hasGameStart())
 			return;
-		if (!getGameConfig().getGameEnd().isGameOver(this, (InGameState) getState()))
+		if (!getGameConfig().getGameEnd().isGameOver((InGameState) getState()))
 			return;
 
 		stopGame();

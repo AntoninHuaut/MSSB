@@ -1,6 +1,5 @@
 package fr.maner.mssb.type.end;
 
-import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.type.state.InGameState;
 
 public class TimeLimitEnd extends GameEnd {
@@ -29,7 +28,7 @@ public class TimeLimitEnd extends GameEnd {
 	}
 
 	@Override
-	public boolean isGameOver(GameData gameData, InGameState inGameState) {
+	public boolean checkGameOver(InGameState inGameState, int nbPlayablePlayers) {
 		return inGameState.getStartTime() + timeMS < System.currentTimeMillis();
 	}
 }

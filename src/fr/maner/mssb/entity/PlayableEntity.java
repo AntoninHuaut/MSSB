@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.GameMode;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maner.mssb.game.GameData;
@@ -31,6 +33,12 @@ public abstract class PlayableEntity extends EntityClass {
 	public abstract double getWeaponDamage();
 
 	public abstract void initEntity();
+	
+	@Override
+	public void fallInVoid(EntityDamageEvent e) {
+		((Damageable) e.getEntity()).setHealth(0.0D);
+		e.setCancelled(true);
+	}
 
 	@Override
 	public void teleportOnMap(Player p) {

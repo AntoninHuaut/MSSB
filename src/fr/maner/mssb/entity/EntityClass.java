@@ -1,6 +1,7 @@
 package fr.maner.mssb.entity;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maner.mssb.factory.ItemFactory;
@@ -42,6 +43,10 @@ public abstract class EntityClass {
 	public boolean isPlayableClass() { return this instanceof PlayableEntity; }
 	
 	public abstract void initPlayer(Player p);
+	
+	public void fallInVoid(EntityDamageEvent e) {
+		teleportOnMap((Player) e.getEntity());
+	}
 	
 	public void teleportOnMap(Player p) {
 		if (!getGameData().getState().hasGameStart()) return;

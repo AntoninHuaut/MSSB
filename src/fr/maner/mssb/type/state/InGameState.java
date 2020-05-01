@@ -76,7 +76,7 @@ public class InGameState extends GameState {
 		Player victim = e.getEntity();
 		UUID victimUUID = victim.getUniqueId();
 		IGPlayerData victimData = playersIGData.get(victimUUID);
-		
+
 		if (victimData == null) return;
 
 		UUID killerUUID = victimData.getLastDamager();
@@ -104,6 +104,7 @@ public class InGameState extends GameState {
 		if (!isKillByPlayer)
 			e.setDeathMessage(String.format("§c✖  §6%s §eest mort", e.getEntity().getName()));
 
+		getGameData().getGameConfig().getGameEnd().checkPlayer(getGameData(), this, victim);
 		getGameData().checkGameOver();
 	}
 
@@ -124,8 +125,10 @@ public class InGameState extends GameState {
 			return;
 
 		if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
-			((Player) ent).setHealth(0.0D);
-			e.setCancelled(true);
+			EntityClass entityClass = EntityManager.getInstance().getClassPlayer(ent.getUniqueId());
+			if (entityClass == null) return;
+
+			entityClass.fallInVoid(e);
 		} else
 			getGameData().getGameConfig().getGameType().modifyDamage(e);
 	}

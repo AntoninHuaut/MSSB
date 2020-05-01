@@ -17,7 +17,7 @@ public class ItemEffectRun implements Runnable {
 	private int taskId;
 	
 	public ItemEffectRun(JavaPlugin pl) {
-		this.taskId = Bukkit.getScheduler().runTaskTimer(pl, this, 20, 20).getTaskId();
+		this.taskId = Bukkit.getScheduler().runTaskTimer(pl, this, 20, 10).getTaskId();
 	}
 	
 	@Override
