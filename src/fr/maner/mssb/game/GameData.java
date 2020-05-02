@@ -6,6 +6,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maner.mssb.MSSB;
+import fr.maner.mssb.entity.EntityClass;
+import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.factory.BookFactory;
 import fr.maner.mssb.runnable.GameRun;
 import fr.maner.mssb.runnable.ItemEffectRun;
@@ -50,13 +52,23 @@ public class GameData {
 
 		ItemStack book = BookFactory.buildResumeBook(inGameState);
 		lobbyState.setBookResume(book);
+		
+		String winnerMsg = getGameConfig().getGameEnd().getWinnerMessage(inGameState);
 
 		Bukkit.getOnlinePlayers().forEach(p -> {
-			p.sendTitle("", ChatColor.translateAlternateColorCodes('&', "&eLa partie est terminée !"), 10, 70, 20);
+			p.sendTitle(ChatColor.translateAlternateColorCodes('&', "&eFin de partie !"), ChatColor.translateAlternateColorCodes('&', winnerMsg == null ? "" : winnerMsg), 10, 70, 20);
 			p.playSound(p.getLocation(), Sound.ENTITY_WITHER_DEATH, 0.25F, 1F);
 			lobbyState.initPlayer(p);
 			p.openBook(book);
+			gameRun.sendActionBarStats(inGameState, p);
+			
+			EntityClass entityClass = EntityManager.getInstance().getClassPlayer(p.getUniqueId());
+			
+			if (entityClass != null && !entityClass.isPlayableClass())
+				EntityManager.getInstance().removeClassPlayer(p.getUniqueId());
 		});
+		
+		stopaRunnable();
 	}
 
 	public void createRunnable() {
@@ -64,7 +76,7 @@ public class GameData {
 		gameRun = new GameRun(this);
 	}
 	
-	public void stopRunnable() {
+	public void stopaRunnable() {
 		itemEffectRun.cancel();
 		gameRun.cancel();
 	}

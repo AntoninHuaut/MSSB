@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.game.GameData;
+import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.Heads;
 
 public class SpectatorEntity extends EntityClass {
@@ -17,10 +18,20 @@ public class SpectatorEntity extends EntityClass {
 	}
 
 	@Override
-	public void initPlayer(Player p) {
-		if (!getGameData().getState().hasGameStart()) return;
-		
+	public EntityClass initPlayer(Player p) {
+		if (!getGameData().getState().hasGameStart())
+			return this;
+
 		p.setGameMode(GameMode.SPECTATOR);
+		return this;
+	}
+
+	@Override
+	public void teleportOnMap(Player p) {
+		if (!getGameData().getState().hasGameStart())
+			return;
+
+		p.teleport(((InGameState) getGameData().getState()).getMapData().getLoc());
 	}
 
 }

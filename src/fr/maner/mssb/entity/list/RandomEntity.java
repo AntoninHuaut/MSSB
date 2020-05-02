@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
-import fr.maner.mssb.entity.PlayableEntity;
+import fr.maner.mssb.entity.list.playable.PlayableEntity;
 import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.utils.Heads;
 
@@ -22,7 +22,7 @@ public class RandomEntity extends EntityClass {
 	}
 
 	@Override
-	public void initPlayer(Player p) {
+	public EntityClass initPlayer(Player p) {
 		List<PlayableEntity> playableEntity = EntityManager.getInstance().getPlayableEntityList(getGameData());
 		EntityClass newEntity;
 
@@ -38,6 +38,13 @@ public class RandomEntity extends EntityClass {
 		newEntity.initPlayer(p);
 
 		p.sendMessage(String.format(" §6» §eVous avez obtenu la classe %s%s", newEntity.getColor(), newEntity.getName()));
+		
+		return newEntity;
+	}
+
+	@Override
+	public void teleportOnMap(Player p) {
+		p.kickPlayer("§cErreur, vous ne devriez pas être en random à ce stade de la partie");
 	}
 
 }

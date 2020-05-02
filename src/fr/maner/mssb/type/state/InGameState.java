@@ -15,15 +15,15 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
-import fr.maner.mssb.entity.PlayableEntity;
 import fr.maner.mssb.entity.list.SpectatorEntity;
+import fr.maner.mssb.entity.list.playable.PlayableEntity;
 import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.game.IGPlayerData;
 import fr.maner.mssb.utils.map.MapData;
 
 public class InGameState extends GameState {
 
-	private final long TIME_KILL = 3500; // ms
+	private final long TIME_KILL = 5000; // ms
 
 	private MapData mapData;
 	private HashMap<UUID, IGPlayerData> playersIGData = new HashMap<UUID, IGPlayerData>();
@@ -39,14 +39,6 @@ public class InGameState extends GameState {
 
 	public void initState() {
 		this.startTime = System.currentTimeMillis();
-		Bukkit.getOnlinePlayers().forEach(p -> {
-			PlayableEntity playableClass = EntityManager.getInstance().getPlayableClassPlayer(p.getUniqueId());
-
-			if (playableClass != null)
-				playersIGData.put(p.getUniqueId(), new IGPlayerData());
-		});
-
-		EntityManager.getInstance().getPlayableEntityList(getGameData()).forEach(pEntity -> pEntity.initEntity());
 	}
 
 	@Override
@@ -61,14 +53,21 @@ public class InGameState extends GameState {
 			EntityManager.getInstance().setClassPlayer(p.getUniqueId(), spec);
 		}
 
-		entityClass.initPlayer(p);
-		entityClass.teleportOnMap(p);
+		entityClass.initPlayer(p).teleportOnMap(p);
 	}
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-		if (e.getEntity() instanceof Player && e.getDamager() instanceof Player)
-			playersIGData.get(e.getEntity().getUniqueId()).setDamager(e.getDamager().getUniqueId());
+		if (e.getDamager() instanceof Player) {
+			Player pDamager = (Player) e.getDamager();
+
+			PlayableEntity playableClass = EntityManager.getInstance().getPlayableClassPlayer(pDamager.getUniqueId());
+			if (playableClass != null)
+				playableClass.playableEntityFightEntity(pDamager, e.getEntity());
+
+			if (e.getEntity() instanceof Player)
+				playersIGData.get(e.getEntity().getUniqueId()).setDamager(pDamager.getUniqueId());
+		}
 	}
 
 	@EventHandler
@@ -84,25 +83,21 @@ public class InGameState extends GameState {
 		victimData.addDeath();
 
 		boolean isKillByPlayer = false;
+		boolean isKillValid = victimData.getLastDamage() + TIME_KILL > System.currentTimeMillis();
 
-		if (killerUUID != null) {
+		if (killerUUID != null && isKillValid) {
 			IGPlayerData killerData = playersIGData.get(killerUUID);
 
 			if (killerData != null) {
-				boolean isKillValid = killerData.getLastDamage() + TIME_KILL > System.currentTimeMillis();
+				killerData.addKill();
+				isKillByPlayer = true;
 
-				if (isKillValid) {
-					killerData.addKill();
-					isKillByPlayer = true;
-
-					e.setDeathMessage(String.format("§c✖  §6%s §ea été tué par §6%s", e.getEntity().getName(),
-							Bukkit.getPlayer(killerUUID).getName()));
-				}
+				e.setDeathMessage(String.format("§c☠ %s §a⚔ %s", e.getEntity().getName(), Bukkit.getPlayer(killerUUID).getName()));
 			}
 		}
 
 		if (!isKillByPlayer)
-			e.setDeathMessage(String.format("§c✖  §6%s §eest mort", e.getEntity().getName()));
+			e.setDeathMessage(String.format("§c☠ %s", e.getEntity().getName()));
 
 		getGameData().getGameConfig().getGameEnd().checkPlayer(getGameData(), this, victim);
 		getGameData().checkGameOver();

@@ -4,16 +4,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-import fr.maner.mssb.factory.ItemFactory;
+import fr.maner.mssb.entity.list.playable.PlayableEntity;
+import fr.maner.mssb.factory.ArmorFactory;
 import fr.maner.mssb.factory.SkullFactory;
 import fr.maner.mssb.game.GameData;
-import fr.maner.mssb.type.state.InGameState;
 
 public abstract class EntityClass {
 	
 	private GameData gameData;
 	
-	private ItemStack itemDisplay;
+	private ItemStack playerHead;
 	private String color;
 	private String name;
 	
@@ -21,7 +21,7 @@ public abstract class EntityClass {
 		this.gameData = gameData;
 		this.color = color;
 		this.name = name;
-		setItemDisplay(base64);
+		setPlayerHead(base64);
 	}
 	
 	public String getColor() {
@@ -32,26 +32,21 @@ public abstract class EntityClass {
 		return name;
 	}
 	
-	public ItemStack getItemDisplay() {
-		return itemDisplay;
+	public ItemStack getPlayerHead() {
+		return playerHead;
 	}
 	
-	private void setItemDisplay(String base64) {
-		this.itemDisplay = new ItemFactory(SkullFactory.buildFromBase64(base64)).setName(getColor() + getName()).build();
+	private void setPlayerHead(String base64) {
+		this.playerHead = new ArmorFactory(SkullFactory.buildFromBase64(base64)).setName(getColor() + getName()).build();
 	}
 	
 	public boolean isPlayableClass() { return this instanceof PlayableEntity; }
 	
-	public abstract void initPlayer(Player p);
+	public abstract EntityClass initPlayer(Player p);
+	public abstract void teleportOnMap(Player p);
 	
 	public void fallInVoid(EntityDamageEvent e) {
 		teleportOnMap((Player) e.getEntity());
-	}
-	
-	public void teleportOnMap(Player p) {
-		if (!getGameData().getState().hasGameStart()) return;
-		
-		p.teleport(((InGameState) getGameData().getState()).getMapData().getLoc());
 	}
 	
 	public GameData getGameData() {

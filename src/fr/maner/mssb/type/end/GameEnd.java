@@ -11,6 +11,9 @@ import fr.maner.mssb.type.state.InGameState;
 
 public abstract class GameEnd {
 
+	public abstract String getConfigMessage();
+	public abstract String getWinnerMessage(InGameState inGameState);
+
 	public abstract boolean checkGameOver(InGameState inGameState, int nbPlayablePlayers);
 	public boolean isGameOver(InGameState inGameState) {
 		Collection<? extends Player> players = Bukkit.getOnlinePlayers();

@@ -9,7 +9,10 @@ import javax.annotation.Nullable;
 
 import fr.maner.mssb.entity.list.RandomEntity;
 import fr.maner.mssb.entity.list.SpectatorEntity;
+import fr.maner.mssb.entity.list.playable.BlazeEntity;
+import fr.maner.mssb.entity.list.playable.PlayableEntity;
 import fr.maner.mssb.entity.list.playable.WolfEntity;
+import fr.maner.mssb.entity.list.playable.ZombieEntity;
 import fr.maner.mssb.game.GameData;
 
 public class EntityManager {
@@ -31,7 +34,9 @@ public class EntityManager {
 	public List<PlayableEntity> getPlayableEntityList(GameData gameData) {
 		List<PlayableEntity> playableEntityList = new ArrayList<PlayableEntity>();
 		
+		playableEntityList.add(new BlazeEntity(gameData));
 		playableEntityList.add(new WolfEntity(gameData));
+		playableEntityList.add(new ZombieEntity(gameData));
 		
 		return playableEntityList;
 	}

@@ -31,7 +31,7 @@ public class ClassGUI extends InvGUI {
 
 		for (int i = 0; i < entityList.size(); i++) {
 			EntityClass entityClass = entityList.get(i);
-			setItem(i, entityClass.getItemDisplay(), p -> selectClass(p, entityClass));
+			setItem(i, entityClass.getPlayerHead(), p -> selectClass(p, entityClass));
 		}
 	}
 

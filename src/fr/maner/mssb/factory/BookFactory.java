@@ -97,17 +97,17 @@ public class BookFactory extends ItemFactory {
 	}
 
 	public static int sortByKill(Entry<UUID, IGPlayerData> e1, Entry<UUID, IGPlayerData> e2) {
-		int diff = e1.getValue().getKill() - e2.getValue().getKill();
+		int diff = e2.getValue().getKill() - e1.getValue().getKill();
 		if (diff == 0)
-			return e2.getValue().getDeath() - e1.getValue().getDeath();
+			return e1.getValue().getDeath() - e2.getValue().getDeath();
 
 		return diff;
 	}
 
 	public static int sortByLessDeath(Entry<UUID, IGPlayerData> e1, Entry<UUID, IGPlayerData> e2) {
-		int diff = e2.getValue().getDeath() - e1.getValue().getDeath();
+		int diff = e1.getValue().getDeath() - e2.getValue().getDeath();
 		if (diff == 0)
-			return e1.getValue().getKill() - e2.getValue().getKill();
+			return e2.getValue().getKill() - e1.getValue().getKill();
 
 		return diff;
 	}

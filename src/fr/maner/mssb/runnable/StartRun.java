@@ -5,7 +5,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.maner.mssb.entity.EntityManager;
+import fr.maner.mssb.entity.list.playable.PlayableEntity;
 import fr.maner.mssb.game.GameData;
+import fr.maner.mssb.game.IGPlayerData;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.map.MapData;
 
@@ -24,7 +27,7 @@ public class StartRun implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public void run() {	
 		String title = null;
 		int fadeIn = 5, stay = 10, fadeOut = 5;
 
@@ -33,8 +36,9 @@ public class StartRun implements Runnable {
 			Bukkit.getOnlinePlayers().forEach(p -> {
 				p.getInventory().clear();
 				p.closeInventory();
+				sendGameInfos(p);
 			});
-			
+
 			title = "&aLa partie va commencer";
 			stay = 30;
 			break;
@@ -61,14 +65,32 @@ public class StartRun implements Runnable {
 		iteration++;
 	}
 
+	private void sendGameInfos(Player p) {
+		p.sendMessage("§b§lParamètres de la partie :\n");
+		p.sendMessage(" §aMode de jeu : " + gameData.getGameConfig().getGameType().getConfigMessage());
+		p.sendMessage(" §aParamètre de victoire : " + gameData.getGameConfig().getGameEnd().getConfigMessage());
+	}
+
 	private void startGame() {
 		cancel();
 		initPlayer(); // LobbyState
-		
+
 		gameData.createRunnable();
 		gameData.setGameState(new InGameState(gameData, mapData), false);
-		
+
 		initPlayer(); // InGameState
+		initStart();
+	}
+
+	private void initStart() {
+		EntityManager.getInstance().getPlayableEntityList(gameData).forEach(pEntity -> pEntity.initEntity());
+
+		Bukkit.getOnlinePlayers().forEach(p -> {
+			PlayableEntity playableEntity = EntityManager.getInstance().getPlayableClassPlayer(p.getUniqueId());
+
+			if (playableEntity != null)
+				((InGameState) gameData.getState()).getPlayersIGData().put(p.getUniqueId(), new IGPlayerData());
+		});
 	}
 
 	private void initPlayer() {
