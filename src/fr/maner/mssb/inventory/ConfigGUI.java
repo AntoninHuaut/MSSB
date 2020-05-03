@@ -138,9 +138,9 @@ public class ConfigGUI extends InvGUI {
 		if (!gameType.isKBMode()) return;
 		KBMode kbMode = (KBMode) gameType;
 
-		if (clickData != null) kbMode.addRegenKb(getDoubleByClick(clickData));
+		if (clickData != null) kbMode.addRegenKb(getIntByClick(clickData));
 
-		new ItemFactory(ConfigGUIEnum.REGEN_KB.getItem()).setName(String.format("&6[&c- &e%.1f&6] &3Réduction KB/sec", kbMode.getRegenKb())).build();
+		new ItemFactory(ConfigGUIEnum.REGEN_KB.getItem()).setName(String.format("&6[&c- &e%d&6] &3Réduction KB/sec", kbMode.getRegenKb())).build();
 		setItem(ConfigGUIEnum.REGEN_KB);
 	}
 

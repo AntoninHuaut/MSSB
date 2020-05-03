@@ -3,10 +3,9 @@ package fr.maner.mssb.runnable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import fr.maner.mssb.entity.EntityManager;
-import fr.maner.mssb.entity.list.playable.PlayableEntity;
 import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.game.IGPlayerData;
+import fr.maner.mssb.type.end.GameEnd;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.ConvertDate;
 import net.md_5.bungee.api.ChatMessageType;
@@ -15,11 +14,13 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class GameRun implements Runnable {
 
 	private GameData gameData;
+	private GameEnd gameEnd;
 
 	private int taskId;
 
 	public GameRun(GameData gameData) {
 		this.gameData = gameData;
+		this.gameEnd = gameData.getGameConfig().getGameEnd();
 		this.taskId = Bukkit.getScheduler().runTaskTimer(gameData.getPlugin(), this, 20, 20).getTaskId();
 	}
 
@@ -29,14 +30,12 @@ public class GameRun implements Runnable {
 			return;
 
 		InGameState inGameState = (InGameState) gameData.getState();
+		inGameState.getBossBar().setProgress(1.0D - gameEnd.getProgress(inGameState));
 
 		Bukkit.getOnlinePlayers().forEach(p -> {
 			sendActionBarStats(inGameState, p);
 
-			PlayableEntity playableEntity = EntityManager.getInstance().getPlayableClassPlayer(p.getUniqueId());
-
-			if (playableEntity != null)
-				playableEntity.runEverySecond(p);
+			gameData.getGameConfig().getGameType().regenPlayer(p);
 		});
 
 		gameData.checkGameOver();

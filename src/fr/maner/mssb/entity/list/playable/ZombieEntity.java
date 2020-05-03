@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import fr.maner.mssb.factory.ArmorFactory.ArmorType;
 import fr.maner.mssb.factory.ItemFactory;
-import fr.maner.mssb.factory.LeatherArmorFactory;
+import fr.maner.mssb.factory.armor.LeatherArmorFactory;
+import fr.maner.mssb.factory.armor.ArmorFactory.ArmorType;
 import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.utils.Heads;
 
@@ -24,7 +24,7 @@ public class ZombieEntity extends PlayableEntity {
 	public ZombieEntity(GameData gameData) {
 		super(gameData, COLOR, NAME, Heads.ZOMBIE);
 
-		setMainWeapon(new ItemFactory(Material.IRON_SHOVEL).setAttackDamage(getWeaponDamage()).setName("&ePelle du mineur").setUnbreakable(true).addEnchantment(Enchantment.KNOCKBACK, 1).build());
+		setWeapons(new ItemFactory(Material.IRON_SHOVEL).setAttackDamage(getWeaponDamage()).setName("&ePelle du mineur").setUnbreakable(true).addEnchantment(Enchantment.KNOCKBACK, 1).build());
 		setArmors(Arrays.asList(
 				new LeatherArmorFactory(ArmorType.LEATHER_BOOTS, Color.fromRGB(99, 129, 112)).setBonusArmorProtection(3).build(),
 				new LeatherArmorFactory(ArmorType.LEATHER_LEGGINGS, Color.fromRGB(99, 129, 112)).setBonusArmorProtection(2).build(),
@@ -44,9 +44,4 @@ public class ZombieEntity extends PlayableEntity {
 		((Player) victim).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
 		damager.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5, 0));
 	}
-	
-	@Override
-	public void initEntity() {}
-	@Override
-	public void runEverySecond(Player p) {}
 }

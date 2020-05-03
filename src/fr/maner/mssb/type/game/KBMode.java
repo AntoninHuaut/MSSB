@@ -7,13 +7,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class KBMode extends GameType {
 
 	private double kbMultiplier;
-	private double regenKb;
+	private int regenKb;
 
 	public KBMode() {
-		setKbMultiplier(1.0);
+		setKbMultiplier(4.5);
 		setRegenKb(5);
 	}
 
+	/* KBMode => https://docs.google.com/spreadsheets/d/1TE4CJOGk0nWGjtyo6Eb5DUJozxaGZXoqsjmYE3z3KMI/ */
 	@Override
 	public void setPlayerDamage(EntityDamageByEntityEvent e) {
 		Player damager = (Player) e.getDamager();
@@ -21,15 +22,9 @@ public class KBMode extends GameType {
 
 		Player victim = (Player) e.getEntity();
 
-		victim.setExp(0F);
 		victim.setLevel(victim.getLevel() + (int) Math.ceil(totalDamage));
 
-		double multi = victim.getLevel();
-		multi /= 60;
-
-		for (int i = 100; i < victim.getLevel(); i += 100)
-			if (i < victim.getLevel() && i >= 100)
-				multi *= 1.5;
+		double multi = 2 * Math.exp(victim.getLevel() * 0.0075) - 1;
 
 		victim.setVelocity(damager.getLocation().getDirection().setY(0).normalize().multiply(multi));
 	}
@@ -62,13 +57,13 @@ public class KBMode extends GameType {
 			setKbMultiplier(0.5);
 	}
 
-	public void setRegenKb(double regenKb) {
+	public void setRegenKb(int regenKb) {
 		if (regenKb < 0)
 			return;
 		this.regenKb = regenKb;
 	}
 
-	public void addRegenKb(double regenKb) {
+	public void addRegenKb(int regenKb) {
 		this.regenKb += regenKb;
 		if (this.regenKb < 0)
 			setRegenKb(0);
@@ -78,12 +73,17 @@ public class KBMode extends GameType {
 		return kbMultiplier;
 	}
 
-	public double getRegenKb() {
+	public int getRegenKb() {
 		return regenKb;
 	}
 
 	@Override
 	public String getConfigMessage() {
 		return String.format("§6Knockback §7| §eMultiplicateur §6×%.1f§7 §7| §eRéduction KB/sec §c-%.1f§7", getKbMultiplier(), getRegenKb());
+	}
+
+	@Override
+	public void regenPlayer(Player p) {
+		p.setLevel(Math.max(0,  p.getLevel() - getRegenKb()));
 	}
 }

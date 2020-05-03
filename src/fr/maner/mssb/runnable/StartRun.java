@@ -2,6 +2,7 @@ package fr.maner.mssb.runnable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,7 +28,7 @@ public class StartRun implements Runnable {
 	}
 
 	@Override
-	public void run() {	
+	public void run() {
 		String title = null;
 		int fadeIn = 5, stay = 10, fadeOut = 5;
 
@@ -91,10 +92,20 @@ public class StartRun implements Runnable {
 			if (playableEntity != null)
 				((InGameState) gameData.getState()).getPlayersIGData().put(p.getUniqueId(), new IGPlayerData());
 		});
+		
+		gameData.getGameConfig().getGameEnd().setNbPlayablePlayerAtStart();
 	}
 
 	private void initPlayer() {
-		Bukkit.getOnlinePlayers().forEach(p -> gameData.getState().initPlayer(p));
+		Bukkit.getOnlinePlayers().forEach(p -> {
+			gameData.getState().initPlayer(p);
+			setAttackSpeed(p, 16.0D);
+		});
+	}
+
+	private void setAttackSpeed(Player p, double attackSpeed) {
+		p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(attackSpeed);
+		p.saveData();
 	}
 
 	public void cancel() {

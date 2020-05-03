@@ -25,6 +25,11 @@ public class MSSB extends JavaPlugin {
 		getCommand(mssbCmd.getCmd()).setExecutor(mssbCmd);
 		getCommand(mssbCmd.getCmd()).setTabCompleter(mssbCmd);
 	}
+	
+	@Override
+	public void onDisable() {
+		gameData.getState().reset();
+	}
 
 	private void initListeners(PluginManager pm) {
 		pm.registerEvents(new EntityListener(), this);

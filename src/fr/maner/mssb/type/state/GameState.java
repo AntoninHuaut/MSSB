@@ -64,4 +64,5 @@ public abstract class GameState implements Listener {
 	}
 	
 	public abstract int getMinY();
+	public abstract void reset();
 }

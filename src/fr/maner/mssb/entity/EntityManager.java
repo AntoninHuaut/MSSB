@@ -11,6 +11,7 @@ import fr.maner.mssb.entity.list.RandomEntity;
 import fr.maner.mssb.entity.list.SpectatorEntity;
 import fr.maner.mssb.entity.list.playable.BlazeEntity;
 import fr.maner.mssb.entity.list.playable.PlayableEntity;
+import fr.maner.mssb.entity.list.playable.SkeletonEntity;
 import fr.maner.mssb.entity.list.playable.WolfEntity;
 import fr.maner.mssb.entity.list.playable.ZombieEntity;
 import fr.maner.mssb.game.GameData;
@@ -35,6 +36,7 @@ public class EntityManager {
 		List<PlayableEntity> playableEntityList = new ArrayList<PlayableEntity>();
 		
 		playableEntityList.add(new BlazeEntity(gameData));
+		playableEntityList.add(new SkeletonEntity(gameData));
 		playableEntityList.add(new WolfEntity(gameData));
 		playableEntityList.add(new ZombieEntity(gameData));
 		

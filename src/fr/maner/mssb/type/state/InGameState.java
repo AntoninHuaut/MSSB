@@ -4,12 +4,19 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -24,6 +31,8 @@ import fr.maner.mssb.utils.map.MapData;
 public class InGameState extends GameState {
 
 	private final long TIME_KILL = 5000; // ms
+	
+	private BossBar bossBar;
 
 	private MapData mapData;
 	private HashMap<UUID, IGPlayerData> playersIGData = new HashMap<UUID, IGPlayerData>();
@@ -34,6 +43,9 @@ public class InGameState extends GameState {
 		super(gameData);
 
 		this.mapData = mapData;
+		this.bossBar = Bukkit.createBossBar("§6Objectif §7: §e" + gameData.getGameConfig().getGameEnd().getObjectifMessage(), BarColor.BLUE, BarStyle.SEGMENTED_10);
+		this.bossBar.setVisible(true);
+		
 		initState();
 	}
 
@@ -44,6 +56,7 @@ public class InGameState extends GameState {
 	@Override
 	public void initPlayer(Player p) {
 		super.initPlayer(p);
+		bossBar.addPlayer(p);
 
 		EntityClass entityClass = EntityManager.getInstance().getClassPlayer(p.getUniqueId());
 
@@ -58,15 +71,34 @@ public class InGameState extends GameState {
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof Player) {
-			Player pDamager = (Player) e.getDamager();
+		Player pDamager = null;
+		if (e.getDamager() instanceof Player)
+			pDamager = (Player) e.getDamager();
 
-			PlayableEntity playableClass = EntityManager.getInstance().getPlayableClassPlayer(pDamager.getUniqueId());
-			if (playableClass != null)
-				playableClass.playableEntityFightEntity(pDamager, e.getEntity());
+		else if (e.getDamager() instanceof Projectile) {
+			Projectile proj = (Projectile) e.getDamager();
 
-			if (e.getEntity() instanceof Player)
-				playersIGData.get(e.getEntity().getUniqueId()).setDamager(pDamager.getUniqueId());
+			if (proj.getShooter() instanceof Player)
+				pDamager = (Player) proj.getShooter();
+		}
+
+		if (pDamager == null) return; 
+
+		PlayableEntity playableClass = EntityManager.getInstance().getPlayableClassPlayer(pDamager.getUniqueId());
+		if (playableClass != null)
+			playableClass.playableEntityFightEntity(pDamager, e.getEntity());
+
+		if (e.getEntity() instanceof Player)
+			playersIGData.get(e.getEntity().getUniqueId()).setDamager(pDamager.getUniqueId());
+	}
+
+	@EventHandler
+	public void onEntityShootArrow(EntityShootBowEvent e) {
+		PlayableEntity playableClass = EntityManager.getInstance().getPlayableClassPlayer(e.getEntity().getUniqueId());
+		if (playableClass != null) {
+			Entity newProjectile = playableClass.playableEntityShootProjectile((Player) e.getEntity(), e.getProjectile());
+
+			if (newProjectile != null) e.setProjectile(newProjectile);
 		}
 	}
 
@@ -92,7 +124,13 @@ public class InGameState extends GameState {
 				killerData.addKill();
 				isKillByPlayer = true;
 
-				e.setDeathMessage(String.format("§c☠ %s §a⚔ %s", e.getEntity().getName(), Bukkit.getPlayer(killerUUID).getName()));
+				OfflinePlayer offKiller = Bukkit.getOfflinePlayer(killerUUID);
+				e.setDeathMessage(String.format("§c☠ %s §a⚔ %s", e.getEntity().getName(), offKiller.getName()));
+
+				if (offKiller.isOnline()) {
+					Player killer = offKiller.getPlayer();
+					killer.playSound(killer.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, 2F, 0.5F);
+				}
 			}
 		}
 
@@ -161,5 +199,18 @@ public class InGameState extends GameState {
 
 	public long getStartTime() {
 		return startTime;
+	}
+
+	public long getTIME_KILL() {
+		return TIME_KILL;
+	}
+
+	public BossBar getBossBar() {
+		return bossBar;
+	}
+
+	@Override
+	public void reset() {
+		this.bossBar.removeAll();
 	}
 }

@@ -5,8 +5,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maner.mssb.entity.list.playable.PlayableEntity;
-import fr.maner.mssb.factory.ArmorFactory;
-import fr.maner.mssb.factory.SkullFactory;
+import fr.maner.mssb.factory.armor.ArmorFactory;
+import fr.maner.mssb.factory.item.SkullFactory;
 import fr.maner.mssb.game.GameData;
 
 public abstract class EntityClass {

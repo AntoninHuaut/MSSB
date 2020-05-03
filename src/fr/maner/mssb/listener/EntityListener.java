@@ -1,5 +1,8 @@
 package fr.maner.mssb.listener;
 
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
@@ -11,13 +14,14 @@ public class EntityListener implements Listener {
 
 	@EventHandler
 	public void onEntityCombust(EntityCombustEvent e) {
-		if (!(e.getEntity() instanceof org.bukkit.entity.Player))
-			e.setCancelled(true); 
+		if (e.getEntity() instanceof Player || e.getEntity() instanceof Arrow) return;
+
+		e.setCancelled(true); 
 	}
 
 	@EventHandler
 	public void onExpTarget(EntityTargetLivingEntityEvent e) {
-		if (e.getEntity() instanceof org.bukkit.entity.ExperienceOrb)
+		if (e.getEntity() instanceof ExperienceOrb)
 			e.getEntity().remove(); 
 	}
 

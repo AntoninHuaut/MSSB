@@ -4,14 +4,12 @@ import java.util.Arrays;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import fr.maner.mssb.factory.ArmorFactory.ArmorType;
 import fr.maner.mssb.factory.ItemFactory;
-import fr.maner.mssb.factory.LeatherArmorFactory;
+import fr.maner.mssb.factory.armor.ArmorFactory.ArmorType;
+import fr.maner.mssb.factory.armor.LeatherArmorFactory;
 import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.utils.Heads;
 
@@ -23,7 +21,7 @@ public class WolfEntity extends PlayableEntity {
 	public WolfEntity(GameData gameData) {
 		super(gameData, COLOR, NAME, Heads.HOSTILE_WOLF);
 		
-		setMainWeapon(new ItemFactory(Material.BONE).setAttackDamage(getWeaponDamage()).setName("&eOs de combat").build());
+		setWeapons(new ItemFactory(Material.BONE).setAttackDamage(getWeaponDamage()).setName("&eOs de combat").build());
 		setArmors(Arrays.asList(
 				new LeatherArmorFactory(ArmorType.LEATHER_BOOTS, Color.WHITE).build(),
 				new LeatherArmorFactory(ArmorType.LEATHER_LEGGINGS, Color.WHITE).build(),
@@ -40,10 +38,5 @@ public class WolfEntity extends PlayableEntity {
 	public void initEntity() {
 		getGameData().getItemEffectRun().addPotionEffect(getMainWeapon(), new PotionEffect(PotionEffectType.SPEED, 20, 0, false, false));
 	}
-
-	@Override
-	public void runEverySecond(Player p) {}
-	@Override
-	public void playableEntityFightEntity(Player damager, Entity victim) {}
 
 }

@@ -110,4 +110,7 @@ public class LobbyState extends GameState {
 	public void setBookResume(ItemStack bookResume) {
 		this.bookResume = bookResume;
 	}
+
+	@Override
+	public void reset() {}
 }

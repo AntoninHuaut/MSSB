@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maner.mssb.factory.ItemFactory;
-import fr.maner.mssb.factory.SkullFactory;
+import fr.maner.mssb.factory.item.SkullFactory;
 
 public class MapData {
 

@@ -1,6 +1,7 @@
 package fr.maner.mssb.entity.list.playable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.GameMode;
@@ -17,7 +18,7 @@ import fr.maner.mssb.utils.map.MapData;
 
 public abstract class PlayableEntity extends EntityClass {
 
-	private ItemStack mainWeapon;
+	private List<ItemStack> weapons;
 	private List<ItemStack> armors = new ArrayList<ItemStack>();
 
 	public PlayableEntity(GameData gameData, String color, String name, String base64) {
@@ -28,17 +29,20 @@ public abstract class PlayableEntity extends EntityClass {
 	public EntityClass initPlayer(Player p) {
 		p.setGameMode(GameMode.SURVIVAL);
 
-		p.getInventory().setItem(0, mainWeapon);
+		for (int i = 0; i < weapons.size(); i++)
+			p.getInventory().setItem(i, weapons.get(i));
+
 		p.getInventory().setArmorContents(armors.toArray(new ItemStack[0]));
-		
+
 		return this;
 	}
+	
+	public void initEntity() {};
+	public void playableEntityFightEntity(Player damager, Entity victim) {};
+	public Entity playableEntityShootProjectile(Player shooter, Entity projectile) { return null; };
 
 	protected abstract double getWeaponDamage();
-	public abstract void initEntity();
-	public abstract void runEverySecond(Player p);
-	public abstract void playableEntityFightEntity(Player damager, Entity victim);
-	
+
 	@Override
 	public void fallInVoid(EntityDamageEvent e) {
 		((Damageable) e.getEntity()).setHealth(0.0D);
@@ -56,12 +60,12 @@ public abstract class PlayableEntity extends EntityClass {
 		p.teleport(mapData.getRandomLoc(p));
 	}
 
-	public void setMainWeapon(ItemStack mainWeapon) {
-		this.mainWeapon = mainWeapon;
+	public void setWeapons(ItemStack... weapons) {
+		this.weapons = Arrays.asList(weapons);
 	}
 
 	public ItemStack getMainWeapon() {
-		return mainWeapon;
+		return weapons.get(0);
 	}
 
 	public List<ItemStack> getArmors() {

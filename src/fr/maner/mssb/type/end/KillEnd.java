@@ -42,7 +42,7 @@ public class KillEnd extends GameEnd {
 		Optional<Entry<UUID, IGPlayerData>> winner = inGameState.getPlayersIGData().entrySet().stream().sorted(this::sortByKill).findFirst();
 		if (!winner.isPresent()) return null;
 
-		return String.format("&6%s &egagne le match !", Bukkit.getPlayer(winner.get().getKey()).getName());
+		return String.format("&6%s &egagne le match !", Bukkit.getOfflinePlayer(winner.get().getKey()).getName());
 	}
 
 	public int sortByKill(Entry<UUID, IGPlayerData> e1, Entry<UUID, IGPlayerData> e2) {
@@ -52,5 +52,18 @@ public class KillEnd extends GameEnd {
 	@Override
 	public String getConfigMessage() {
 		return String.format("§eLe premier qui atteint §6%d §ekill(s)", getNBKill());
+	}
+
+	@Override
+	public String getObjectifMessage() {
+		return String.format("Être le 1er à §6%d §ekill(s)", getNBKill());
+	}
+
+	@Override
+	public double getProgress(InGameState inGameState) {
+		Optional<Entry<UUID, IGPlayerData>> playerTopKiller = inGameState.getPlayersIGData().entrySet().stream().sorted(this::sortByKill).findFirst();
+		if (playerTopKiller == null) return 0D;
+		
+		return (double) playerTopKiller.get().getValue().getKill() / getNBKill();
 	}
 }

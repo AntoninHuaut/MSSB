@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import fr.maner.mssb.MSSB;
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
-import fr.maner.mssb.factory.BookFactory;
+import fr.maner.mssb.factory.item.BookFactory;
 import fr.maner.mssb.runnable.GameRun;
 import fr.maner.mssb.runnable.ItemEffectRun;
 import fr.maner.mssb.runnable.StartRun;
@@ -47,6 +47,8 @@ public class GameData {
 			return;
 
 		InGameState inGameState = (InGameState) state;
+		inGameState.reset();
+		
 		setGameState(new LobbyState(this), true);
 		LobbyState lobbyState = (LobbyState) state;
 
@@ -68,7 +70,7 @@ public class GameData {
 				EntityManager.getInstance().removeClassPlayer(p.getUniqueId());
 		});
 		
-		stopaRunnable();
+		stopRunnable();
 	}
 
 	public void createRunnable() {
@@ -76,7 +78,7 @@ public class GameData {
 		gameRun = new GameRun(this);
 	}
 	
-	public void stopaRunnable() {
+	public void stopRunnable() {
 		itemEffectRun.cancel();
 		gameRun.cancel();
 	}

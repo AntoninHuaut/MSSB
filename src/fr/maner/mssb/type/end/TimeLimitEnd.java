@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 
 import fr.maner.mssb.game.IGPlayerData;
 import fr.maner.mssb.type.state.InGameState;
+import fr.maner.mssb.utils.ConvertDate;
 
 public class TimeLimitEnd extends GameEnd {
 	
@@ -19,7 +20,7 @@ public class TimeLimitEnd extends GameEnd {
 	}
 
 	public void setTimeLimit(double timeLimit) {
-		if (timeLimit < 1.0) return;
+		if (timeLimit < 0.5) return;
 		
 		this.timeLimit = timeLimit;
 		refreshTimeMS();
@@ -29,7 +30,7 @@ public class TimeLimitEnd extends GameEnd {
 		this.timeLimit += d;
 		refreshTimeMS();
 		
-		if (this.timeLimit < 1) setTimeLimit(1.0);
+		if (this.timeLimit < 0.5) setTimeLimit(0.5);
 	}
 	
 	private void refreshTimeMS() {
@@ -50,7 +51,7 @@ public class TimeLimitEnd extends GameEnd {
 		Optional<Entry<UUID, IGPlayerData>> winner = inGameState.getPlayersIGData().entrySet().stream().sorted(this::sortByKill).findFirst();
 		if (!winner.isPresent()) return null;
 
-		return String.format("&6%s &egagne le match !", Bukkit.getPlayer(winner.get().getKey()).getName());
+		return String.format("&6%s &egagne le match !", Bukkit.getOfflinePlayer(winner.get().getKey()).getName());
 	}
 
 	public int sortByKill(Entry<UUID, IGPlayerData> e1, Entry<UUID, IGPlayerData> e2) {
@@ -59,6 +60,16 @@ public class TimeLimitEnd extends GameEnd {
 	
 	@Override
 	public String getConfigMessage() {
-		return String.format("§eCelui avec le plus de kills au bout de §6%.1f §eminute(s)", getTimeLimit());
+		return String.format("§eCelui avec le plus de kills au bout de §6%s", ConvertDate.millisToShortDHMS(timeMS));
+	}
+
+	@Override
+	public String getObjectifMessage() {
+		return String.format("Le + kills en §6%s", ConvertDate.millisToShortDHMS(timeMS));
+	}
+
+	@Override
+	public double getProgress(InGameState inGameState) {
+		return Math.max(0, Math.min(1, (double) (System.currentTimeMillis() - inGameState.getStartTime()) / timeMS));
 	}
 }

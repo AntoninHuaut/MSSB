@@ -1,5 +1,7 @@
 package fr.maner.mssb.type.game;
 
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class NormalMode extends GameType {
@@ -31,4 +33,9 @@ public class NormalMode extends GameType {
 
 	@Override
 	public void setPlayerDamage(EntityDamageByEntityEvent e) {}
+
+	@Override
+	public void regenPlayer(Player p) {
+		p.setHealth(Math.min(p.getHealth() + getRegenHealth(), p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue()));
+	}
 }

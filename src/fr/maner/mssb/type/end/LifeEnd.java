@@ -62,7 +62,7 @@ public class LifeEnd extends GameEnd {
 		Optional<Entry<UUID, IGPlayerData>> winner = inGameState.getPlayersIGData().entrySet().stream().sorted(this::sortByLessDeath).findFirst();
 		if (!winner.isPresent()) return null;
 
-		return String.format("&6%s &egagne le match !", Bukkit.getPlayer(winner.get().getKey()).getName());
+		return String.format("&6%s &egagne le match !", Bukkit.getOfflinePlayer(winner.get().getKey()).getName());
 	}
 	
 	public int sortByLessDeath(Entry<UUID, IGPlayerData> e1, Entry<UUID, IGPlayerData> e2) {
@@ -72,5 +72,17 @@ public class LifeEnd extends GameEnd {
 	@Override
 	public String getConfigMessage() {
 		return String.format("§eLe dernier encore en vie §7(§6%d §evie(s)§7)", getNBLife());
+	}
+
+	@Override
+	public String getObjectifMessage() {
+		return String.format("Être le dernier survivant §7(§6%d §evie(s)§7)", getNBLife());
+	}
+
+	@Override
+	public double getProgress(InGameState inGameState) {
+		int nbPlayablePlayers = getNbPlayablePlayers();
+		
+		return 1.0 - (double) nbPlayablePlayers / getNbPlayablePlayerAtStart();
 	}
 }
