@@ -1,4 +1,4 @@
-package fr.maner.mssb.factory;
+package fr.maner.mssb.factory.item;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

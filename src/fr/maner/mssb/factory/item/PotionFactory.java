@@ -1,9 +1,11 @@
-package fr.maner.mssb.factory;
+package fr.maner.mssb.factory.item;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+
+import fr.maner.mssb.factory.ItemFactory;
 
 public class PotionFactory extends ItemFactory {
 	

@@ -1,4 +1,4 @@
-package fr.maner.mssb.factory;
+package fr.maner.mssb.factory.armor;
 
 import java.util.UUID;
 
@@ -8,6 +8,8 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import fr.maner.mssb.factory.ItemFactory;
 
 public class ArmorFactory extends ItemFactory {
 

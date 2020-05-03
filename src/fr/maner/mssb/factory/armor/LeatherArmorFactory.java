@@ -1,4 +1,4 @@
-package fr.maner.mssb.factory;
+package fr.maner.mssb.factory.armor;
 
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;

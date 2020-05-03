@@ -1,4 +1,4 @@
-package fr.maner.mssb.factory;
+package fr.maner.mssb.factory.item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
+import fr.maner.mssb.factory.ItemFactory;
 import fr.maner.mssb.game.IGPlayerData;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.ConvertDate;
@@ -77,7 +78,7 @@ public class BookFactory extends ItemFactory {
 		List<Entry<UUID, IGPlayerData>> topKillsEntry = playersData.entrySet().stream().sorted(BookFactory::sortByKill).collect(Collectors.toList());
 		for (int i = 0; i < 10 && i < topKillsEntry.size(); i++) {
 			Entry<UUID, IGPlayerData> entry = topKillsEntry.get(i);
-			topKills.append("\n " + Bukkit.getPlayer(entry.getKey()).getName() + " : ").color(ChatColor.DARK_AQUA)
+			topKills.append("\n " + Bukkit.getOfflinePlayer(entry.getKey()).getName() + " : ").color(ChatColor.DARK_AQUA)
 					.append("" + entry.getValue().getKill()).color(ChatColor.GOLD);
 		}
 		bookFactory.addPage(topKills.create());
@@ -88,7 +89,7 @@ public class BookFactory extends ItemFactory {
 		List<Entry<UUID, IGPlayerData>> topDeathsEntry = playersData.entrySet().stream().sorted(BookFactory::sortByLessDeath).collect(Collectors.toList());
 		for (int i = 0; i < 10 && i < topDeathsEntry.size(); i++) {
 			Entry<UUID, IGPlayerData> entry = topDeathsEntry.get(i);
-			topDeaths.append("\n " + Bukkit.getPlayer(entry.getKey()).getName() + " : ").color(ChatColor.DARK_AQUA)
+			topDeaths.append("\n " + Bukkit.getOfflinePlayer(entry.getKey()).getName() + " : ").color(ChatColor.DARK_AQUA)
 					.append("" + entry.getValue().getDeath()).color(ChatColor.GOLD);
 		}
 		bookFactory.addPage(topDeaths.create());
