@@ -8,15 +8,20 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maner.mssb.entity.EntityClass;
+import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.map.MapData;
 
-public abstract class PlayableEntity extends EntityClass {
+public abstract class PlayableEntity extends EntityClass implements Listener {
 
 	private List<ItemStack> weapons;
 	private List<ItemStack> armors = new ArrayList<ItemStack>();
@@ -38,10 +43,29 @@ public abstract class PlayableEntity extends EntityClass {
 	}
 	
 	public void initEntity() {};
-	public void playableEntityFightEntity(Player damager, Entity victim) {};
-	public Entity playableEntityShootProjectile(Player shooter, Entity projectile) { return null; };
 
 	protected abstract double getWeaponDamage();
+	
+	public void playableEntityFightEntity(Player damager, Entity victim) {};
+	@EventHandler
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+		Player pDamager = null;
+		if (e.getDamager() instanceof Player)
+			pDamager = (Player) e.getDamager();
+
+		else if (e.getDamager() instanceof Projectile) {
+			Projectile proj = (Projectile) e.getDamager();
+
+			if (proj.getShooter() instanceof Player)
+				pDamager = (Player) proj.getShooter();
+		}
+
+		if (pDamager == null) return; 
+
+		PlayableEntity playableClass = EntityManager.getInstance().getPlayableClassPlayer(pDamager.getUniqueId());
+		if (playableClass != null)
+			playableClass.playableEntityFightEntity(pDamager, e.getEntity());
+	}
 
 	@Override
 	public void fallInVoid(EntityDamageEvent e) {

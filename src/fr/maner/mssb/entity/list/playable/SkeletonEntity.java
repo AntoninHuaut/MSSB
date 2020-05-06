@@ -6,8 +6,9 @@ import java.util.Random;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityShootBowEvent;
 
 import fr.maner.mssb.factory.ItemFactory;
 import fr.maner.mssb.factory.armor.ArmorFactory.ArmorType;
@@ -39,11 +40,11 @@ public class SkeletonEntity extends PlayableEntity {
 	
 	private Random random = new Random();
 
-	@Override
-	public Entity playableEntityShootProjectile(Player shooter, Entity projectile) {
-		if (random.nextInt(4) == 0)
-			projectile.setFireTicks(20 * 5);
+	@EventHandler
+	public void onEntityShootArrow(EntityShootBowEvent e) {
+		if (!e.getProjectile().getType().equals(EntityType.ARROW)) return;
 		
-		return projectile;
+		if (random.nextInt(4) == 0)
+			e.getProjectile().setFireTicks(20 * 5);
 	}
 }

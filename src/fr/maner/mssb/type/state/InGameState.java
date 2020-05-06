@@ -16,14 +16,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.entity.list.SpectatorEntity;
-import fr.maner.mssb.entity.list.playable.PlayableEntity;
 import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.game.IGPlayerData;
 import fr.maner.mssb.utils.map.MapData;
@@ -82,24 +80,10 @@ public class InGameState extends GameState {
 				pDamager = (Player) proj.getShooter();
 		}
 
-		if (pDamager == null) return; 
-
-		PlayableEntity playableClass = EntityManager.getInstance().getPlayableClassPlayer(pDamager.getUniqueId());
-		if (playableClass != null)
-			playableClass.playableEntityFightEntity(pDamager, e.getEntity());
+		if (pDamager == null) return;
 
 		if (e.getEntity() instanceof Player)
 			playersIGData.get(e.getEntity().getUniqueId()).setDamager(pDamager.getUniqueId());
-	}
-
-	@EventHandler
-	public void onEntityShootArrow(EntityShootBowEvent e) {
-		PlayableEntity playableClass = EntityManager.getInstance().getPlayableClassPlayer(e.getEntity().getUniqueId());
-		if (playableClass != null) {
-			Entity newProjectile = playableClass.playableEntityShootProjectile((Player) e.getEntity(), e.getProjectile());
-
-			if (newProjectile != null) e.setProjectile(newProjectile);
-		}
 	}
 
 	@EventHandler
