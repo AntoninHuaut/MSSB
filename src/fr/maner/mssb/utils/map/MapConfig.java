@@ -57,24 +57,4 @@ public class MapConfig extends JsonConfig {
 	public List<MapData> getMapData() {
 		return mapDataList;
 	}
-
-	private int getInt(JsonObject obj, String key) {
-		return get(obj, key).getAsInt();
-	}
-
-	private String getString(JsonObject obj, String key) {
-		return get(obj, key).getAsString();
-	}
-
-	private double getDouble(JsonObject obj, String key) {
-		return get(obj, key).getAsDouble();
-	}
-
-	private float getFloat(JsonObject obj, String key) {
-		return get(obj, key).getAsFloat();
-	}
-
-	private JsonElement get(JsonObject obj, String key) {
-		return obj.get(key);
-	}
 }

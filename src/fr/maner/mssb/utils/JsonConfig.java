@@ -53,6 +53,26 @@ public class JsonConfig {
 		pl.saveResource(fileName, false);
 	}
 	
+	protected int getInt(JsonObject obj, String key) {
+		return get(obj, key).getAsInt();
+	}
+
+	protected String getString(JsonObject obj, String key) {
+		return get(obj, key).getAsString();
+	}
+
+	protected double getDouble(JsonObject obj, String key) {
+		return get(obj, key).getAsDouble();
+	}
+
+	protected float getFloat(JsonObject obj, String key) {
+		return get(obj, key).getAsFloat();
+	}
+
+	protected JsonElement get(JsonObject obj, String key) {
+		return obj.get(key);
+	}
+	
 	public JsonObject getJsonObject() {
 		return getJson().getAsJsonObject();
 	}

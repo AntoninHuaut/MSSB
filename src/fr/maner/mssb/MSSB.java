@@ -10,7 +10,6 @@ import fr.maner.mssb.listener.EntityListener;
 import fr.maner.mssb.listener.PlayerListener;
 import fr.maner.mssb.listener.WorldListener;
 
-/* https://www.spigotmc.org/wiki/creating-a-gui-inventory/ */
 public class MSSB extends JavaPlugin {
 	
 	private GameData gameData;

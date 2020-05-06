@@ -55,16 +55,4 @@ public class SpecialLocConfig extends JsonConfig {
 		else
 			p.teleport(loc);
 	}
-
-	private double getDouble(JsonObject obj, String key) {
-		return get(obj, key).getAsDouble();
-	}
-
-	private float getFloat(JsonObject obj, String key) {
-		return get(obj, key).getAsFloat();
-	}
-
-	private JsonElement get(JsonObject obj, String key) {
-		return obj.get(key);
-	}
 }
