@@ -82,6 +82,7 @@ public class LifeEnd extends GameEnd {
 	@Override
 	public double getProgress(InGameState inGameState) {
 		int nbPlayablePlayers = getNbPlayablePlayers();
+		if (nbPlayablePlayers == 0) return 0;
 		
 		return 1.0 - (double) nbPlayablePlayers / getNbPlayablePlayerAtStart();
 	}

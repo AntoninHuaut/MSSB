@@ -10,8 +10,8 @@ import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.factory.item.BookFactory;
 import fr.maner.mssb.runnable.GameRun;
-import fr.maner.mssb.runnable.ItemEffectRun;
 import fr.maner.mssb.runnable.StartRun;
+import fr.maner.mssb.runnable.itemeffect.ItemRun;
 import fr.maner.mssb.type.state.GameState;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.type.state.LobbyState;
@@ -31,7 +31,7 @@ public class GameData {
 	private GameState state;
 	private GameConfig config;
 
-	private ItemEffectRun itemEffectRun;
+	private ItemRun itemEffectRun;
 	private GameRun gameRun;
 
 	public void startGame(MapData mapData) {
@@ -74,7 +74,7 @@ public class GameData {
 	}
 
 	public void createRunnable() {
-		itemEffectRun = new ItemEffectRun(pl);
+		itemEffectRun = new ItemRun(pl, this);
 		gameRun = new GameRun(this);
 	}
 	
@@ -92,7 +92,7 @@ public class GameData {
 			Bukkit.getOnlinePlayers().forEach(p -> newState.initPlayer(p));
 	}
 
-	public ItemEffectRun getItemEffectRun() {
+	public ItemRun getItemEffectRun() {
 		return itemEffectRun;
 	}
 

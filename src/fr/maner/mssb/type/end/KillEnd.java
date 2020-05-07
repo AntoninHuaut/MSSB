@@ -62,7 +62,7 @@ public class KillEnd extends GameEnd {
 	@Override
 	public double getProgress(InGameState inGameState) {
 		Optional<Entry<UUID, IGPlayerData>> playerTopKiller = inGameState.getPlayersIGData().entrySet().stream().sorted(this::sortByKill).findFirst();
-		if (playerTopKiller == null) return 0D;
+		if (playerTopKiller == null || !playerTopKiller.isPresent()) return 0D;
 		
 		return (double) playerTopKiller.get().getValue().getKill() / getNBKill();
 	}

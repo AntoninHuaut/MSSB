@@ -2,6 +2,7 @@ package fr.maner.mssb.runnable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,7 +32,7 @@ public class StartRun implements Runnable {
 	public void run() {
 		String title = null;
 		int fadeIn = 5, stay = 10, fadeOut = 5;
-
+		
 		switch (iteration) {
 		case 0:
 			Bukkit.getOnlinePlayers().forEach(p -> {
@@ -58,6 +59,10 @@ public class StartRun implements Runnable {
 			startGame();
 			break;
 		}
+		
+		Bukkit.getOnlinePlayers().forEach(p -> {
+			p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3F, (0.7F + (0.3F * iteration)));
+		});
 
 		if (title != null)
 			for (Player p : Bukkit.getOnlinePlayers())

@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import fr.maner.mssb.entity.list.RandomEntity;
 import fr.maner.mssb.entity.list.SpectatorEntity;
 import fr.maner.mssb.entity.list.playable.BlazeEntity;
+import fr.maner.mssb.entity.list.playable.CreeperEntity;
 import fr.maner.mssb.entity.list.playable.DrownedEntity;
 import fr.maner.mssb.entity.list.playable.PlayableEntity;
 import fr.maner.mssb.entity.list.playable.SkeletonEntity;
@@ -39,6 +40,7 @@ public class EntityManager {
 	public List<PlayableEntity> getPlayableEntityList(GameData gameData) {
 		if (playableEntityList.isEmpty()) {
 			playableEntityList.add(new BlazeEntity(gameData));
+			playableEntityList.add(new CreeperEntity(gameData));
 			playableEntityList.add(new DrownedEntity(gameData));
 			playableEntityList.add(new SkeletonEntity(gameData));
 			playableEntityList.add(new WolfEntity(gameData));
