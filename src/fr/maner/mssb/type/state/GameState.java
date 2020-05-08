@@ -30,6 +30,7 @@ public abstract class GameState implements Listener {
 		p.closeInventory();
 		p.setFireTicks(0);
 		p.setFallDistance(0F);
+		p.setNoDamageTicks(0);
 		p.setLevel(0);
 		p.setExp(0F);
 		p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());

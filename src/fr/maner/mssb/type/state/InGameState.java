@@ -65,6 +65,7 @@ public class InGameState extends GameState {
 		}
 
 		entityClass.initPlayer(p).teleportOnMap(p);
+		Bukkit.getOnlinePlayers().forEach(pGet -> pGet.showPlayer(getGameData().getPlugin(), p));
 	}
 
 	@EventHandler
@@ -127,7 +128,9 @@ public class InGameState extends GameState {
 
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent e) {
+		Bukkit.getOnlinePlayers().forEach(pGet -> pGet.hidePlayer(getGameData().getPlugin(), e.getPlayer())); // Hide player before random tp
 		e.setRespawnLocation(mapData.getLoc());
+		
 		Bukkit.getScheduler().runTaskLater(getGameData().getPlugin(), () -> initPlayer(e.getPlayer()), 1);
 	}
 
