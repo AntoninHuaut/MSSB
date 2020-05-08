@@ -18,14 +18,24 @@ public class MapData {
 
 	private Random random = new Random();
 
+	private String name;
+	private String author;
 	private ItemStack is;
 	private Location loc;
 
 	private int minY;
 	private int maxY;
 	private int radius;
+	
+	public MapData(String author, String name, int minY, int maxY, int radius) {
+		this.author = author;
+		this.name = name;
+		this.minY = minY;
+		this.maxY = maxY;
+		this.radius = radius;
+	}
 
-	public MapData setItem(String name, String material, String opt_SkullData, int minY, int maxY, int radius) {
+	public MapData setItem(String material, String opt_SkullData) {
 		Material mat;
 
 		try {
@@ -43,11 +53,7 @@ public class MapData {
 		else
 			itemFactory = new ItemFactory(mat);
 
-		is = itemFactory.setName(name).build();
-
-		this.minY = minY;
-		this.maxY = maxY;
-		this.radius = radius;
+		is = itemFactory.setName(name).addLore("§7§oRéalisé par " + author).build();
 
 		return this;
 	}
@@ -118,5 +124,13 @@ public class MapData {
 
 	public int getMinY() {
 		return minY;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

@@ -75,6 +75,7 @@ public class StartRun implements Runnable {
 		p.sendMessage("§b§lParamètres de la partie :\n");
 		p.sendMessage(" §aMode de jeu : " + gameData.getGameConfig().getGameType().getConfigMessage());
 		p.sendMessage(" §aParamètre de victoire : " + gameData.getGameConfig().getGameEnd().getConfigMessage());
+		p.sendMessage(" §aMap sélectionnée : §e" + mapData.getName() + " §7(§epar §6" + mapData.getAuthor() + "§7)");
 	}
 
 	private void startGame() {

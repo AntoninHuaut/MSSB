@@ -46,10 +46,11 @@ public class MapConfig extends JsonConfig {
 					getFloat(locObj, "yaw"), getFloat(locObj, "pitch"));
 			loc.add(0.5, 0, 0.5);
 
-			MapData mapData = new MapData().setItem(getString(itemObj, "name"), getString(itemObj, "material"),
-					getString(itemObj, "opt_SkullData"), getInt(itemObj, "minY"), getInt(itemObj, "maxY"),
-					getInt(itemObj, "radius")).setLoc(loc);
-			
+			MapData mapData = new MapData(getString(itemObj, "author"), getString(itemObj, "name"),
+					getInt(itemObj, "minY"), getInt(itemObj, "maxY"), getInt(itemObj, "radius"));
+
+			mapData.setItem(getString(itemObj, "material"), getString(itemObj, "opt_SkullData")).setLoc(loc);
+
 			mapDataList.add(mapData);
 		}
 	}

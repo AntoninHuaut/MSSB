@@ -60,7 +60,7 @@ public class TimeLimitEnd extends GameEnd {
 	
 	@Override
 	public String getConfigMessage() {
-		return String.format("§eCelui avec le plus de kills au bout de §6%s", ConvertDate.millisToShortDHMS(timeMS));
+		return String.format("Celui avec le plus de kills au bout de §6%s", ConvertDate.millisToShortDHMS(timeMS));
 	}
 
 	@Override

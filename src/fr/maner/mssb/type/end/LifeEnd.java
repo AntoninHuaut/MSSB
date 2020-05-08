@@ -71,7 +71,7 @@ public class LifeEnd extends GameEnd {
 
 	@Override
 	public String getConfigMessage() {
-		return String.format("§eLe dernier encore en vie §7(§6%d §evie(s)§7)", getNBLife());
+		return String.format("Le dernier encore en vie §7(§6%d §evie(s)§7)", getNBLife());
 	}
 
 	@Override
@@ -82,8 +82,8 @@ public class LifeEnd extends GameEnd {
 	@Override
 	public double getProgress(InGameState inGameState) {
 		int nbPlayablePlayers = getNbPlayablePlayers();
-		if (nbPlayablePlayers == 0) return 0;
+		if (nbPlayablePlayers == 0) return 1.0D;
 		
-		return 1.0 - (double) nbPlayablePlayers / getNbPlayablePlayerAtStart();
+		return 1.0D - ((double) nbPlayablePlayers / getNbPlayablePlayerAtStart());
 	}
 }

@@ -1,6 +1,7 @@
 [{
     "item": {
-        "name": "Freeze25",
+        "name": "A Freeze25",
+        "author": "Freeze25",
         "material": "BRICKS",
         "opt_SkullData": "",
         "minY": 100,
@@ -11,6 +12,23 @@
         "x": -2054,
         "y": 108,
         "z": -2004,
+        "pitch": 0,
+        "yaw": 0
+    }
+}, {
+    "item": {
+        "name": "Banquise",
+        "author": "Freeze25",
+        "material": "SNOW_BLOCK",
+        "opt_SkullData": "",
+        "minY": 105,
+        "maxY": 255,
+        "radius": 32
+    },
+    "loc": {
+        "x": 1927,
+        "y": 116,
+        "z": -2052,
         "pitch": 0,
         "yaw": 0
     }

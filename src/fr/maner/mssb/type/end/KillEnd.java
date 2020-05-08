@@ -51,7 +51,7 @@ public class KillEnd extends GameEnd {
 
 	@Override
 	public String getConfigMessage() {
-		return String.format("§eLe premier qui atteint §6%d §ekill(s)", getNBKill());
+		return String.format("Le premier qui atteint §6%d §ekill(s)", getNBKill());
 	}
 
 	@Override
