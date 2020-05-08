@@ -25,7 +25,7 @@ public class SkeletonEntity extends PlayableEntity {
 		super(gameData, COLOR, NAME, Heads.SKELETON);
 
 		setWeapons(new ItemFactory(Material.BOW).setAttackDamage(getWeaponDamage()).setName("&cArc de feu")
-				.addEnchantment(Enchantment.ARROW_INFINITE, 1).setUnbreakable(true).build(),
+				.addEnchantment(Enchantment.ARROW_INFINITE, 1).addEnchantment(Enchantment.ARROW_KNOCKBACK, 1).setUnbreakable(true).build(),
 				new ItemFactory(Material.ARROW).build());
 
 		setArmors(Arrays.asList(new LeatherArmorFactory(ArmorType.LEATHER_BOOTS, Color.fromRGB(159, 173, 199)).build(),

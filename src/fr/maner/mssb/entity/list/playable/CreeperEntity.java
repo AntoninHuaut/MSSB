@@ -57,7 +57,7 @@ public class CreeperEntity extends PlayableEntity {
 	@Override
 	public void initEntity() {
 		List<ItemData> itemDataList = new ArrayList<ItemData>();
-		itemDataList.add(new ItemData(explosive, 4, 8));
+		itemDataList.add(new ItemData(explosive, 5, 6));
 
 		getGameData().getItemEffectRun().addItemStackGive(this, itemDataList);
 	}
@@ -118,7 +118,6 @@ public class CreeperEntity extends PlayableEntity {
 		loc.setPitch(p.getLocation().getPitch());
 		Creeper creeper = (Creeper) loc.getWorld().spawnEntity(loc, EntityType.CREEPER);
 		creeper.setAware(false);
-		creeper.setGlowing(true);
 		creeper.setInvulnerable(true);
 		creeper.setPowered(random.nextInt(7) == 0);
 		creeper.setCanPickupItems(false);

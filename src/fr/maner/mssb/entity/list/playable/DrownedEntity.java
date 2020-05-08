@@ -58,7 +58,7 @@ public class DrownedEntity extends PlayableEntity {
 	private HashMap<UUID, TridentRunnable> tridentRunMap = new HashMap<UUID, TridentRunnable>();
 
 	class TridentRunnable implements Runnable {
-		private static final long TIME_TRIDENT = 5000;
+		private static final long TIME_TRIDENT = 4000;
 
 		private Player shooter;
 		private Trident trident;
