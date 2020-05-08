@@ -53,7 +53,7 @@ public class MapData {
 		else
 			itemFactory = new ItemFactory(mat);
 
-		is = itemFactory.setName(name).addLore("§7§oRéalisé par " + author).build();
+		is = itemFactory.setName("§r§f" + name).addLore("§7§oRéalisé par " + author).build();
 
 		return this;
 	}

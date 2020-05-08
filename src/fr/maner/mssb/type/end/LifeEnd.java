@@ -1,8 +1,8 @@
 package fr.maner.mssb.type.end;
 
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -81,9 +81,12 @@ public class LifeEnd extends GameEnd {
 
 	@Override
 	public double getProgress(InGameState inGameState) {
-		int nbPlayablePlayers = getNbPlayablePlayers();
-		if (nbPlayablePlayers == 0) return 1.0D;
+		int totalLife = getNbPlayablePlayerAtStart() * getNBLife();
+		int totalDeath = inGameState.getPlayersIGData().entrySet().stream().map(entry -> entry.getValue().getDeath()).reduce((e1, e2) -> e1 + e2).get();
+		int remainLife = totalLife - totalDeath;
 		
-		return 1.0D - ((double) nbPlayablePlayers / getNbPlayablePlayerAtStart());
+		if (totalLife == 0) return 1.0D;
+		
+		return 1.0D - ((double) remainLife / totalLife);
 	}
 }

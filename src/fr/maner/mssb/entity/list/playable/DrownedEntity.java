@@ -76,9 +76,12 @@ public class DrownedEntity extends PlayableEntity {
 		public void run() {
 			if (trident.isDead() || (startTime + TIME_TRIDENT < System.currentTimeMillis())) {
 				cancel();
+				killEntity();
 
-				if (!shooter.getInventory().contains(getMainWeapon()))
+				if (!shooter.getInventory().contains(getMainWeapon()) && getGameData().getState().hasGameStart())
 					shooter.getInventory().addItem(getMainWeapon());
+				else if (!getGameData().getState().hasGameStart())
+					shooter.getInventory().removeItem(getMainWeapon());
 			}
 		}
 
