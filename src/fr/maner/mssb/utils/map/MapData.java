@@ -1,6 +1,7 @@
 package fr.maner.mssb.utils.map;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -26,7 +27,7 @@ public class MapData {
 	private int minY;
 	private int maxY;
 	private int radius;
-	
+
 	public MapData(String author, String name, int minY, int maxY, int radius) {
 		this.author = author;
 		this.name = name;
@@ -97,6 +98,8 @@ public class MapData {
 
 		return yListLoc.get(random.nextInt(yListLoc.size()));
 	}
+	
+	private List<Material> bellowAllow = Arrays.asList(Material.SNOW);
 
 	public boolean checkBlock(Location loc) {
 		World world = loc.getWorld();
@@ -105,8 +108,9 @@ public class MapData {
 		Block below = world.getBlockAt(loc.add(0, -1, 0));
 		Block above = world.getBlockAt(loc.add(0, 2, 0));
 
-		return below.getType().isSolid() && below.getType().isOccluding() && (above.getType() == Material.AIR)
-				&& (legs.getType() == Material.AIR);
+		boolean belowCheck = bellowAllow.contains(below.getType()) || (below.getType().isSolid() && below.getType().isOccluding());
+
+		return belowCheck && above.getType() == Material.AIR && legs.getType() == Material.AIR;
 	}
 
 	public MapData setLoc(Location loc) {
