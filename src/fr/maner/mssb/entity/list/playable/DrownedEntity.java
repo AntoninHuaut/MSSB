@@ -44,7 +44,7 @@ public class DrownedEntity extends PlayableEntity {
 
 	@Override
 	protected double getWeaponDamage() {
-		return 3;
+		return 2;
 	}
 
 	@Override

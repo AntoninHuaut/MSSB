@@ -11,12 +11,14 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Fence;
 import org.bukkit.block.data.type.TrapDoor;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -87,6 +89,15 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
+	public void onFrameBrake(HangingBreakEvent e) {
+		if (gameData.getGameConfig().isBuildMode())
+			return;
+
+		if (e.getEntity().getType().equals(EntityType.ITEM_FRAME))
+			e.setCancelled(true);
+	}
+
+	@EventHandler
 	public void onFood(FoodLevelChangeEvent e) {
 		e.setCancelled(true);
 	}
@@ -95,10 +106,10 @@ public class PlayerListener implements Listener {
 			Material.CRAFTING_TABLE, Material.ANVIL, Material.SMOKER, Material.GRINDSTONE, Material.BARREL,
 			Material.HOPPER, Material.DISPENSER, Material.DROPPER, Material.DAYLIGHT_DETECTOR, Material.ENDER_CHEST,
 			Material.NOTE_BLOCK, Material.ENDER_CHEST, Material.CRAFTING_TABLE, Material.LOOM,
-			Material.CARTOGRAPHY_TABLE, Material.BLAST_FURNACE);
+			Material.CARTOGRAPHY_TABLE, Material.BLAST_FURNACE, Material.FLOWER_POT);
 	private final Function<Block, Boolean> CHECK_BAN = block -> {
 		BlockData blockData = block.getBlockData();
-		return blockData instanceof Bed || blockData instanceof ShulkerBox || blockData instanceof Fence || blockData instanceof TrapDoor;
+		return block.getType().name().startsWith("POTTED_") || blockData instanceof Bed || blockData instanceof ShulkerBox || blockData instanceof Fence || blockData instanceof TrapDoor;
 	};
 
 	@EventHandler

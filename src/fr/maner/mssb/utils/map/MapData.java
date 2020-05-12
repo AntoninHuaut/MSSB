@@ -100,6 +100,7 @@ public class MapData {
 	}
 	
 	private List<Material> bellowAllow = Arrays.asList(Material.SNOW);
+	private List<Material> bellowDeny = Arrays.asList(Material.BARRIER);
 
 	public boolean checkBlock(Location loc) {
 		World world = loc.getWorld();
@@ -108,7 +109,7 @@ public class MapData {
 		Block below = world.getBlockAt(loc.add(0, -1, 0));
 		Block above = world.getBlockAt(loc.add(0, 2, 0));
 
-		boolean belowCheck = bellowAllow.contains(below.getType()) || (below.getType().isSolid() && below.getType().isOccluding());
+		boolean belowCheck = !bellowDeny.contains(below.getType()) && (bellowAllow.contains(below.getType()) || (below.getType().isSolid() && below.getType().isOccluding()));
 
 		return belowCheck && above.getType() == Material.AIR && legs.getType() == Material.AIR;
 	}

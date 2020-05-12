@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -71,7 +72,7 @@ public class MSSBCmd implements CommandExecutor, TabExecutor {
 		}
 		
 		gameData.getGameConfig().setBuildMode(!gameData.getGameConfig().isBuildMode());
-		sender.sendMessage(String.format(" §6» §eLe mode construction a été %s", (gameData.getGameConfig().isBuildMode() ? "§aactivé" : "§cdésactivé")));
+		Bukkit.broadcastMessage(String.format(" §6» §eLe mode construction a été %s par %s", (gameData.getGameConfig().isBuildMode() ? "§aactivé" : "§cdésactivé"), sender.getName()));
 	}
 
 	@Override

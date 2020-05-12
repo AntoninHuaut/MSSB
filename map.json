@@ -32,4 +32,21 @@
         "pitch": 0,
         "yaw": 0
     }
+}, {
+    "item": {
+        "name": "Îles flottantes",
+        "author": "estebanane99 / Loupyboy / Xelasil",
+        "material": "DIRT",
+        "opt_SkullData": "",
+        "minY": 55,
+        "maxY": 75,
+        "radius": 40
+    },
+    "loc": {
+        "x": -100000,
+        "y": 89,
+        "z": 41,
+        "pitch": 0,
+        "yaw": 0
+    }
 }]

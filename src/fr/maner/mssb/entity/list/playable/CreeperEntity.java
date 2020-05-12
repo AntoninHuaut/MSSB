@@ -43,7 +43,7 @@ public class CreeperEntity extends PlayableEntity {
 		super(gameData, COLOR, NAME, Heads.CHARGED_CREEPER);
 
 		setWeapons(new ItemFactory(Material.GUNPOWDER).setAttackDamage(getWeaponDamage()).setName("&aPoudre répulsive")
-				.addEnchantment(Enchantment.KNOCKBACK, 2).build(), new ItemFactory(explosive.clone()).setAmount(4).build());
+				.addEnchantment(Enchantment.KNOCKBACK, 1).build(), new ItemFactory(explosive.clone()).setAmount(2).build());
 		setArmors(Arrays.asList(new LeatherArmorFactory(ArmorType.LEATHER_BOOTS, Color.fromRGB(12, 208, 18)).build(),
 				new LeatherArmorFactory(ArmorType.LEATHER_LEGGINGS, Color.fromRGB(12, 208, 18)).build(),
 				new LeatherArmorFactory(ArmorType.LEATHER_CHESTPLATE, Color.fromRGB(12, 208, 18)).build()));
@@ -119,7 +119,7 @@ public class CreeperEntity extends PlayableEntity {
 		Creeper creeper = (Creeper) loc.getWorld().spawnEntity(loc, EntityType.CREEPER);
 		creeper.setAware(false);
 		creeper.setInvulnerable(true);
-		creeper.setPowered(random.nextInt(7) == 0);
+		creeper.setPowered(random.nextInt(15) == 0);
 		creeper.setCanPickupItems(false);
 		creeper.setCustomNameVisible(true);
 		creeper.setMetadata("owner", new FixedMetadataValue(getGameData().getPlugin(), p.getUniqueId().toString()));

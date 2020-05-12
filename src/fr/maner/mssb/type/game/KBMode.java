@@ -79,7 +79,7 @@ public class KBMode extends GameType {
 
 	@Override
 	public String getConfigMessage() {
-		return String.format("§6Knockback §7| §eMultiplicateur §6×%.1f§7 §7| §eRéduction KB/sec §c-%.1f§7", getKbMultiplier(), getRegenKb());
+		return String.format("§6Knockback §7| §eMultiplicateur §6×%.1f§7 §7| §eRéduction KB/sec §c-%d§7", getKbMultiplier(), getRegenKb());
 	}
 
 	@Override

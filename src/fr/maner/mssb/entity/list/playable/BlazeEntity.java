@@ -39,7 +39,7 @@ public class BlazeEntity extends PlayableEntity {
 
 	@Override
 	public void playableEntityFightEntity(Player damager, Entity victim) {
-		if (random.nextInt(4) == 0)
+		if (random.nextInt(3) <= 1)
 			victim.setFireTicks(20);
 	}
 }
