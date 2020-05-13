@@ -46,19 +46,16 @@ public class DrownedEntity extends PlayableEntity {
 	protected double getWeaponDamage() {
 		return 2;
 	}
-
+	
 	@Override
-	public void playableEntityFightEntity(Player damager, Entity victim) {
-		if (!(victim instanceof Player))
-			return;
-
-		((Player) victim).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20, 0));
+	public void initEntity() {
+		getGameData().getItemEffectRun().addPotionEffect(getMainWeapon(), new PotionEffect(PotionEffectType.SLOW, 20, 0, false, false));
 	}
 
 	private HashMap<UUID, TridentRunnable> tridentRunMap = new HashMap<UUID, TridentRunnable>();
 
 	class TridentRunnable implements Runnable {
-		private static final long TIME_TRIDENT = 4000;
+		private static final long TIME_TRIDENT = 1750;
 
 		private Player shooter;
 		private Trident trident;
@@ -74,7 +71,10 @@ public class DrownedEntity extends PlayableEntity {
 
 		@Override
 		public void run() {
-			if (trident.isDead() || (startTime + TIME_TRIDENT < System.currentTimeMillis())) {
+			if (shooter.getInventory().contains(getMainWeapon())) 
+				shooter.getInventory().removeItem(getMainWeapon());
+			
+			if (startTime + TIME_TRIDENT < System.currentTimeMillis()) {
 				cancel();
 				killEntity();
 
@@ -123,10 +123,8 @@ public class DrownedEntity extends PlayableEntity {
 			return;
 
 		TridentRunnable tridentRun = tridentRunMap.remove(p.getUniqueId());
-		if (tridentRun != null) {
+		if (tridentRun != null)
 			tridentRun.cancel();
-			tridentRun.killEntity();
-		}
 	}
 
 	@EventHandler
@@ -140,10 +138,7 @@ public class DrownedEntity extends PlayableEntity {
 			if (!(e.getEntity().getShooter() instanceof Player))
 				return;
 
-			UUID uuid = ((Player) e.getEntity().getShooter()).getUniqueId();
-
-			if (tridentRunMap.containsKey(uuid))
-				tridentRunMap.remove(uuid).cancel();
+			e.getEntity().remove();
 		}
 	}
 }

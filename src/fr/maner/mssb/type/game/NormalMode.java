@@ -32,7 +32,7 @@ public class NormalMode extends GameType {
 	}
 
 	@Override
-	public void setPlayerDamage(EntityDamageByEntityEvent e) {}
+	public void callAfterPlayerDamageBy_PlayerProjectile(EntityDamageByEntityEvent e) {}
 
 	@Override
 	public void regenPlayer(Player p) {

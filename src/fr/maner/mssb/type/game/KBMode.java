@@ -1,8 +1,13 @@
 package fr.maner.mssb.type.game;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class KBMode extends GameType {
 
@@ -14,35 +19,57 @@ public class KBMode extends GameType {
 		setRegenKb(5);
 	}
 
-	/* KBMode => https://docs.google.com/spreadsheets/d/1TE4CJOGk0nWGjtyo6Eb5DUJozxaGZXoqsjmYE3z3KMI/ */
+	/*
+	 * KBMode => https://docs.google.com/spreadsheets/d/
+	 * 1TE4CJOGk0nWGjtyo6Eb5DUJozxaGZXoqsjmYE3z3KMI/
+	 */
 	@Override
-	public void setPlayerDamage(EntityDamageByEntityEvent e) {
-		Player damager = (Player) e.getDamager();
+	public void callAfterPlayerDamageBy_PlayerProjectile(EntityDamageByEntityEvent e) {
+		Entity damager = e.getDamager();
 		double totalDamage = (double) e.getFinalDamage() * getKbMultiplier();
 
 		Player victim = (Player) e.getEntity();
 
 		victim.setLevel(victim.getLevel() + (int) Math.ceil(totalDamage));
 
-		double multi = 2 * Math.exp(victim.getLevel() * 0.0075) - 1;
+		final int maxLevelMulti = Math.min(1133, victim.getLevel());
+		final int maxLevelKB = Math.min(2000, victim.getLevel());
 
-		victim.setVelocity(damager.getLocation().getDirection().setY(0).normalize().multiply(multi));
+		double multi = 2 * Math.exp(maxLevelMulti * 0.0075) - 1;
+		double yMulti = 2 * Math.exp(maxLevelKB * 0.00075) - 2;
+
+		victim.setVelocity(damager.getLocation().getDirection().setY(0).normalize().multiply(multi).setY(yMulti));
+	}
+
+	private List<DamageCause> entityIgnore = Arrays.asList(DamageCause.ENTITY_ATTACK, DamageCause.ENTITY_EXPLOSION,
+			DamageCause.ENTITY_SWEEP_ATTACK);
+	
+	@Override
+	public void modifyDamageByEntity(EntityDamageByEntityEvent e) {
+		if (e.isCancelled())
+			return;
+
+		setKBPlayer((Player) e.getEntity(), e.getFinalDamage());
+		e.setDamage(0.0);
 	}
 
 	@Override
 	public void modifyDamage(EntityDamageEvent e) {
 		if (e.isCancelled())
 			return;
+		
+		if (entityIgnore.contains(e.getCause())) return;
 
-		Player victim = (Player) e.getEntity();
-
-		double damageGet = (double) e.getFinalDamage() * getKbMultiplier();
+		setKBPlayer((Player) e.getEntity(), e.getFinalDamage());
+		e.setDamage(0.0);
+	}
+	
+	private void setKBPlayer(Player victim, double finalDamage) {
+		double damageGet = (double) finalDamage * getKbMultiplier();
 		int damageInt = (int) Math.ceil(damageGet);
 
 		victim.setExp(0F);
 		victim.setLevel(victim.getLevel() + damageInt);
-
-		e.setDamage(0.0);
 	}
 
 	public void setKbMultiplier(double kbMultiplier) {
@@ -79,11 +106,12 @@ public class KBMode extends GameType {
 
 	@Override
 	public String getConfigMessage() {
-		return String.format("§6Knockback §7| §eMultiplicateur §6×%.1f§7 §7| §eRéduction KB/sec §c-%d§7", getKbMultiplier(), getRegenKb());
+		return String.format("§6Knockback §7| §eMultiplicateur §6×%.1f§7 §7| §eRéduction KB/sec §c-%d§7",
+				getKbMultiplier(), getRegenKb());
 	}
 
 	@Override
 	public void regenPlayer(Player p) {
-		p.setLevel(Math.max(0,  p.getLevel() - getRegenKb()));
+		p.setLevel(Math.max(0, p.getLevel() - getRegenKb()));
 	}
 }

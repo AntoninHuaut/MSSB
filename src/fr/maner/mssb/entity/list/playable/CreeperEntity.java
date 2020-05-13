@@ -15,7 +15,9 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -43,7 +45,7 @@ public class CreeperEntity extends PlayableEntity {
 		super(gameData, COLOR, NAME, Heads.CHARGED_CREEPER);
 
 		setWeapons(new ItemFactory(Material.GUNPOWDER).setAttackDamage(getWeaponDamage()).setName("&aPoudre répulsive")
-				.addEnchantment(Enchantment.KNOCKBACK, 1).build(), new ItemFactory(explosive.clone()).setAmount(2).build());
+				.addEnchantment(Enchantment.KNOCKBACK, 1).build(), new ItemFactory(explosive.clone()).setAmount(3).build());
 		setArmors(Arrays.asList(new LeatherArmorFactory(ArmorType.LEATHER_BOOTS, Color.fromRGB(12, 208, 18)).build(),
 				new LeatherArmorFactory(ArmorType.LEATHER_LEGGINGS, Color.fromRGB(12, 208, 18)).build(),
 				new LeatherArmorFactory(ArmorType.LEATHER_CHESTPLATE, Color.fromRGB(12, 208, 18)).build()));
@@ -57,7 +59,7 @@ public class CreeperEntity extends PlayableEntity {
 	@Override
 	public void initEntity() {
 		List<ItemData> itemDataList = new ArrayList<ItemData>();
-		itemDataList.add(new ItemData(explosive, 5, 6));
+		itemDataList.add(new ItemData(explosive, 4, 6));
 
 		getGameData().getItemEffectRun().addItemStackGive(this, itemDataList);
 	}
@@ -73,7 +75,7 @@ public class CreeperEntity extends PlayableEntity {
 		ItemStack inHand = p.getInventory().getItemInMainHand();
 		if (!inHand.isSimilar(explosive))
 			return;
-		
+
 		e.setCancelled(true);
 
 		if (inHand.getAmount() > 1)
@@ -84,35 +86,35 @@ public class CreeperEntity extends PlayableEntity {
 		Location loc = e.getClickedBlock() == null ? p.getLocation() : e.getClickedBlock().getLocation().add(0, 1, 0);
 		spawnExplosive(p, loc);
 	}
-	
-	@EventHandler
+
+	@EventHandler(priority = EventPriority.LOW)
 	public void onEntityDamageByCreeper(EntityDamageByEntityEvent e) {
 		if (e.isCancelled()) return;
-		
+
 		Entity damager = e.getDamager();
 		Entity victim = e.getEntity();
-		if (!damager.getType().equals(EntityType.CREEPER) || !victim.getType().equals(EntityType.PLAYER)) return;
-		
-		Creeper creeper = (Creeper) damager;		
-		if (!creeper.hasMetadata("owner")) return;
-		
+		if (!damager.getType().equals(EntityType.PRIMED_TNT) || !victim.getType().equals(EntityType.PLAYER)) return;
+
+		TNTPrimed tntPrime = (TNTPrimed) damager;		
+		if (!tntPrime.hasMetadata("owner")) return;
+
 		Player pVic = (Player) victim;
-		for (MetadataValue metadata : creeper.getMetadata("owner")) {			
+		for (MetadataValue metadata : tntPrime.getMetadata("owner")) {			
 			if(metadata.asString().equals(pVic.getUniqueId().toString()))
 				e.setCancelled(true);
 			else {
 				if(!getGameData().getState().hasGameStart()) return;
 				InGameState igState = (InGameState) getGameData().getState();
-				
+
 				IGPlayerData igPlayerData = igState.getPlayersIGData().get(pVic.getUniqueId());
 				if (igPlayerData != null)
 					igPlayerData.setDamager(UUID.fromString(metadata.asString()));
 			}
 		}
 	}
-	
+
 	private Random random = new Random();
-	
+
 	private void spawnExplosive(Player p, Location loc) {
 		loc.setYaw(p.getLocation().getYaw());
 		loc.setPitch(p.getLocation().getPitch());
@@ -123,18 +125,20 @@ public class CreeperEntity extends PlayableEntity {
 		creeper.setCanPickupItems(false);
 		creeper.setCustomNameVisible(true);
 		creeper.setMetadata("owner", new FixedMetadataValue(getGameData().getPlugin(), p.getUniqueId().toString()));
-		
+		creeper.setSwimming(true);
+		creeper.setExplosionRadius(4);
+
 		new CreeperRun(getGameData().getPlugin(), creeper);
 	}
-	
+
 	public class CreeperRun implements Runnable {
-		
+
 		private static final int TIME_TICK = 30;
-		
+
 		private Creeper creeper;
 		private int taskId;
 		private int currentTick;
-		
+
 		public CreeperRun(JavaPlugin pl, Creeper creeper) {
 			this.creeper = creeper;
 			this.taskId = Bukkit.getScheduler().runTaskTimer(pl, this, 0L, 1L).getTaskId();
@@ -146,14 +150,24 @@ public class CreeperEntity extends PlayableEntity {
 			double percent = (double) currentTick*100 / TIME_TICK;
 			creeper.setCustomName(String.format("§c§l§kX §r§e§l%.1f %% §c§l§kX", percent));
 			currentTick++;
-			
+
 			Location newLoc = creeper.getLocation();
 			newLoc.setYaw(creeper.getLocation().getYaw() + 51F);
 			creeper.teleport(newLoc);
-			
+
 			if (currentTick >= TIME_TICK) {
 				Bukkit.getScheduler().cancelTask(taskId);
-				creeper.explode();
+
+				for (int i = 0; i < (creeper.isPowered() ? 1 : 2); i++) {
+					TNTPrimed tnt = (TNTPrimed) newLoc.getWorld().spawnEntity(newLoc, EntityType.PRIMED_TNT);
+
+					for (MetadataValue metadata : creeper.getMetadata("owner"))
+						tnt.setMetadata("owner", new FixedMetadataValue(getGameData().getPlugin(), metadata.asString()));
+
+					tnt.setFuseTicks(0);
+				}
+
+				creeper.remove();
 			}
 		}
 	}

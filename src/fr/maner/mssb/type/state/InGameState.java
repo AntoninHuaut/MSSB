@@ -10,12 +10,13 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -70,8 +71,9 @@ public class InGameState extends GameState {
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+			
 		Player pDamager = null;
-		if (e.getDamager() instanceof Player)
+		if (e.getDamager().getType().equals(EntityType.PLAYER))
 			pDamager = (Player) e.getDamager();
 
 		else if (e.getDamager() instanceof Projectile) {
@@ -83,7 +85,7 @@ public class InGameState extends GameState {
 
 		if (pDamager == null) return;
 
-		if (e.getEntity() instanceof Player)
+		if (e.getEntity().getType().equals(EntityType.PLAYER))
 			playersIGData.get(e.getEntity().getUniqueId()).setDamager(pDamager.getUniqueId());
 	}
 
@@ -134,7 +136,7 @@ public class InGameState extends GameState {
 		Bukkit.getScheduler().runTaskLater(getGameData().getPlugin(), () -> initPlayer(e.getPlayer()), 1);
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler
 	public void onPlayerDamage(EntityDamageEvent e) {
 		if (e.isCancelled())
 			return;
@@ -152,13 +154,17 @@ public class InGameState extends GameState {
 		} else
 			getGameData().getGameConfig().getGameType().modifyDamage(e);
 	}
-
+	
 	@EventHandler
 	public void onPlayerFightPlayer(EntityDamageByEntityEvent e) {
-		if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
+		if (!(e.getEntity() instanceof Player))
 			return;
+		
+		getGameData().getGameConfig().getGameType().modifyDamageByEntity(e);
+		
+		if (!(e.getDamager().getType().equals(EntityType.PLAYER) || e.getCause().equals(DamageCause.PROJECTILE))) return;
 
-		getGameData().getGameConfig().getGameType().setPlayerDamage(e);
+		getGameData().getGameConfig().getGameType().callAfterPlayerDamageBy_PlayerProjectile(e);
 	}
 
 	@Override

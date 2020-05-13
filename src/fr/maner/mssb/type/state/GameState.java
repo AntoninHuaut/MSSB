@@ -35,6 +35,7 @@ public abstract class GameState implements Listener {
 		p.setExp(0F);
 		p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
 		p.setGameMode(GameMode.SURVIVAL);
+		p.getActivePotionEffects().clear();
 	}
 
 	@EventHandler
