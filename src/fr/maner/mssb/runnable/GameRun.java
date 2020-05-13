@@ -39,7 +39,7 @@ public class GameRun implements Runnable {
 
 	public void sendStats(InGameState inGameState, Player p) {
 		// TODO SET STATS BELOW NAME
-//		inGameState.getPlayersData().get(p.getUniqueId()).updateLines();
+		inGameState.getPlayersData().get(p.getUniqueId()).updateLines();
 //		IGPlayerData igPlayerData = inGameState.getPlayersIGData().get(p.getUniqueId());
 //
 //		if (igPlayerData != null)
