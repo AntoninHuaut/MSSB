@@ -15,6 +15,7 @@ public class KBMode extends GameType {
 	private int regenKb;
 
 	public KBMode() {
+		super("Knockback");
 		setKbMultiplier(4.5);
 		setRegenKb(5);
 	}
@@ -41,9 +42,8 @@ public class KBMode extends GameType {
 		victim.setVelocity(damager.getLocation().getDirection().setY(0).normalize().multiply(multi).setY(yMulti));
 	}
 
-	private List<DamageCause> entityIgnore = Arrays.asList(DamageCause.ENTITY_ATTACK, DamageCause.ENTITY_EXPLOSION,
-			DamageCause.ENTITY_SWEEP_ATTACK);
-	
+	private List<DamageCause> entityIgnore = Arrays.asList(DamageCause.ENTITY_ATTACK, DamageCause.ENTITY_EXPLOSION, DamageCause.ENTITY_SWEEP_ATTACK);
+
 	@Override
 	public void modifyDamageByEntity(EntityDamageByEntityEvent e) {
 		if (e.isCancelled())
@@ -57,13 +57,14 @@ public class KBMode extends GameType {
 	public void modifyDamage(EntityDamageEvent e) {
 		if (e.isCancelled())
 			return;
-		
-		if (entityIgnore.contains(e.getCause())) return;
+
+		if (entityIgnore.contains(e.getCause()))
+			return;
 
 		setKBPlayer((Player) e.getEntity(), e.getFinalDamage());
 		e.setDamage(0.0);
 	}
-	
+
 	private void setKBPlayer(Player victim, double finalDamage) {
 		double damageGet = (double) finalDamage * getKbMultiplier();
 		int damageInt = (int) Math.ceil(damageGet);
@@ -106,8 +107,7 @@ public class KBMode extends GameType {
 
 	@Override
 	public String getConfigMessage() {
-		return String.format("§6Knockback §7| §eMultiplicateur §6×%.1f§7 §7| §eRéduction KB/sec §c-%d§7",
-				getKbMultiplier(), getRegenKb());
+		return String.format("§6%s §7| §eMultiplicateur §6×%.1f§7 §7| §eRéduction KB/sec §c-%d§7", getName(), getKbMultiplier(), getRegenKb());
 	}
 
 	@Override

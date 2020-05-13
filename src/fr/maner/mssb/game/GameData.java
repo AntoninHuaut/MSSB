@@ -62,7 +62,7 @@ public class GameData {
 			p.playSound(p.getLocation(), Sound.ENTITY_WITHER_DEATH, 0.25F, 1F);
 			lobbyState.initPlayer(p);
 			p.openBook(book);
-			gameRun.sendActionBarStats(inGameState, p);
+			gameRun.sendStats(inGameState, p);
 			
 			EntityClass entityClass = EntityManager.getInstance().getClassPlayer(p.getUniqueId());
 			

@@ -6,6 +6,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 public abstract class GameType implements Listener {
+	
+	private String name;
+	
+	public GameType(String name) {
+		this.name = name;
+	}
 
 	/* Entity is Player */
 	public void modifyDamage(EntityDamageEvent e) {}
@@ -18,4 +24,7 @@ public abstract class GameType implements Listener {
 	public boolean isKBMode() { return this instanceof KBMode; }
 	public boolean isNormalMode() { return this instanceof NormalMode; }
 	
+	public String getName() {
+		return name;
+	}
 }

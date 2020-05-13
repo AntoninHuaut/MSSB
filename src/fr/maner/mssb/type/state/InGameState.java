@@ -22,9 +22,10 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
-import fr.maner.mssb.entity.list.SpectatorEntity;
+import fr.maner.mssb.entity.list.RandomEntity;
 import fr.maner.mssb.game.GameData;
 import fr.maner.mssb.game.IGPlayerData;
+import fr.maner.mssb.game.PlayerData;
 import fr.maner.mssb.utils.map.MapData;
 
 public class InGameState extends GameState {
@@ -35,6 +36,7 @@ public class InGameState extends GameState {
 
 	private MapData mapData;
 	private HashMap<UUID, IGPlayerData> playersIGData = new HashMap<UUID, IGPlayerData>();
+	private HashMap<UUID, PlayerData> playersData = new HashMap<UUID, PlayerData>();
 
 	private long startTime;
 
@@ -60,9 +62,14 @@ public class InGameState extends GameState {
 		EntityClass entityClass = EntityManager.getInstance().getClassPlayer(p.getUniqueId());
 
 		if (entityClass == null) {
-			SpectatorEntity spec = new SpectatorEntity(getGameData());
-			entityClass = spec;
-			EntityManager.getInstance().setClassPlayer(p.getUniqueId(), spec);
+			RandomEntity randomEntity = new RandomEntity(getGameData());
+			entityClass = randomEntity;
+			EntityManager.getInstance().setClassPlayer(p.getUniqueId(), randomEntity);
+		}
+		
+		if (!playersData.containsKey(p.getUniqueId())) {
+			PlayerData playerData = new PlayerData(p, this);
+			playersData.put(p.getUniqueId(), playerData);
 		}
 
 		entityClass.initPlayer(p).teleportOnMap(p);
@@ -185,6 +192,12 @@ public class InGameState extends GameState {
 	public int getMinY() {
 		return mapData.getMinY();
 	}
+	
+	@Override
+	public void reset() {
+		this.bossBar.removeAll();
+		playersData.values().forEach(pData -> pData.getScoreboard().delete());
+	}
 
 	public HashMap<UUID, IGPlayerData> getPlayersIGData() {
 		return playersIGData;
@@ -202,8 +215,7 @@ public class InGameState extends GameState {
 		return bossBar;
 	}
 
-	@Override
-	public void reset() {
-		this.bossBar.removeAll();
+	public HashMap<UUID, PlayerData> getPlayersData() {
+		return playersData;
 	}
 }
