@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.game.GameData;
+import fr.maner.mssb.game.data.PlayerData;
 
 public class PlayerListener implements Listener {
 
@@ -71,13 +72,23 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
-		e.setJoinMessage(String.format("§8[§a+§8] %s", e.getPlayer().getName()));
+		Player p = e.getPlayer();
+		
+		e.setJoinMessage(String.format("§8[§a+§8] %s", p.getName()));
+		
+		gameData.getPlayersData().put(p.getUniqueId(), new PlayerData(p, gameData));
 	}
 
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent e) {
-		e.setQuitMessage(String.format("§8[§c-§8] %s", e.getPlayer().getName()));
-		EntityManager.getInstance().removeClassPlayer(e.getPlayer().getUniqueId());
+		Player p = e.getPlayer();
+		
+		e.setQuitMessage(String.format("§8[§c-§8] %s", p.getName()));
+		
+		EntityManager.getInstance().removeClassPlayer(p.getUniqueId());
+		PlayerData playerData = gameData.getPlayersData().remove(p.getUniqueId());
+		
+		if (playerData != null) playerData.deleteScoreboard();
 	}
 
 	@EventHandler(priority = EventPriority.LOW)

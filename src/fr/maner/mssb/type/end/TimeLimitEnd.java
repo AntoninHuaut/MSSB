@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 
-import fr.maner.mssb.game.IGPlayerData;
+import fr.maner.mssb.game.data.IGPlayerData;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.ConvertDate;
 

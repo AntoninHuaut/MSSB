@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 import fr.maner.mssb.factory.ItemFactory;
-import fr.maner.mssb.game.IGPlayerData;
+import fr.maner.mssb.game.data.IGPlayerData;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.ConvertDate;
 import net.md_5.bungee.api.ChatColor;

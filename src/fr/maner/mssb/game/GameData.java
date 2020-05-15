@@ -1,5 +1,8 @@
 package fr.maner.mssb.game;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.event.HandlerList;
@@ -9,6 +12,8 @@ import fr.maner.mssb.MSSB;
 import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.factory.item.BookFactory;
+import fr.maner.mssb.game.data.PlayerData;
+import fr.maner.mssb.game.data.SoundData;
 import fr.maner.mssb.runnable.GameRun;
 import fr.maner.mssb.runnable.StartRun;
 import fr.maner.mssb.runnable.itemeffect.ItemRun;
@@ -21,11 +26,16 @@ import net.md_5.bungee.api.ChatColor;
 public class GameData {
 
 	private transient MSSB pl;
+	private HashMap<UUID, PlayerData> playersData = new HashMap<UUID, PlayerData>();
+	
+	private SoundData soundData;
 
 	public GameData(MSSB pl) {
 		this.pl = pl;
 		this.config = new GameConfig(pl);
 		setGameState(new LobbyState(this), true);
+		
+		this.soundData = new SoundData(this);
 	}
 
 	private GameState state;
@@ -115,5 +125,13 @@ public class GameData {
 			return;
 
 		stopGame();
+	}
+	
+	public HashMap<UUID, PlayerData> getPlayersData() {
+		return playersData;
+	}
+
+	public SoundData getSoundData() {
+		return soundData;
 	}
 }

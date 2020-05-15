@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import fr.maner.mssb.game.IGPlayerData;
+import fr.maner.mssb.game.data.IGPlayerData;
 import fr.maner.mssb.type.state.InGameState;
 
 public class KillEnd extends GameEnd {

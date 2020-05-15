@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.entity.list.playable.PlayableEntity;
 import fr.maner.mssb.game.GameData;
-import fr.maner.mssb.game.IGPlayerData;
+import fr.maner.mssb.game.data.IGPlayerData;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.map.MapData;
 

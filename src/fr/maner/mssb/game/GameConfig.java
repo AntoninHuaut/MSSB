@@ -6,11 +6,13 @@ import fr.maner.mssb.type.end.LifeEnd;
 import fr.maner.mssb.type.game.GameType;
 import fr.maner.mssb.type.game.NormalMode;
 import fr.maner.mssb.utils.map.MapConfig;
+import fr.maner.mssb.utils.songs.SongConfig;
 import fr.maner.mssb.utils.specialloc.SpecialLocConfig;
 
 public class GameConfig {
 	
 	private MapConfig mapConfig;
+	private SongConfig songConfig;
 	private SpecialLocConfig specialLogConfig;
 	
 	private GameType gameType;
@@ -20,6 +22,7 @@ public class GameConfig {
 
 	public GameConfig(MSSB pl) {
 		this.mapConfig = new MapConfig(pl);
+		this.songConfig = new SongConfig(pl);
 		this.specialLogConfig = new SpecialLocConfig(pl);
 		
 		setGameType(new NormalMode());
@@ -53,6 +56,10 @@ public class GameConfig {
 
 	public MapConfig getMapConfig() {
 		return mapConfig;
+	}
+	
+	public SongConfig getSongConfig() {
+		return songConfig;
 	}
 	
 	public SpecialLocConfig getSpecialLogConfig() {

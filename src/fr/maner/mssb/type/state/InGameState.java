@@ -24,8 +24,7 @@ import fr.maner.mssb.entity.EntityClass;
 import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.entity.list.RandomEntity;
 import fr.maner.mssb.game.GameData;
-import fr.maner.mssb.game.IGPlayerData;
-import fr.maner.mssb.game.PlayerData;
+import fr.maner.mssb.game.data.IGPlayerData;
 import fr.maner.mssb.utils.map.MapData;
 
 public class InGameState extends GameState {
@@ -36,7 +35,6 @@ public class InGameState extends GameState {
 
 	private MapData mapData;
 	private HashMap<UUID, IGPlayerData> playersIGData = new HashMap<UUID, IGPlayerData>();
-	private HashMap<UUID, PlayerData> playersData = new HashMap<UUID, PlayerData>();
 
 	private long startTime;
 
@@ -67,10 +65,7 @@ public class InGameState extends GameState {
 			EntityManager.getInstance().setClassPlayer(p.getUniqueId(), randomEntity);
 		}
 		
-		if (!playersData.containsKey(p.getUniqueId())) {
-			PlayerData playerData = new PlayerData(p, this);
-			playersData.put(p.getUniqueId(), playerData);
-		}
+		getGameData().getPlayersData().get(p.getUniqueId()).createBoard();
 
 		entityClass.initPlayer(p).teleportOnMap(p);
 		Bukkit.getOnlinePlayers().forEach(pGet -> pGet.showPlayer(getGameData().getPlugin(), p));
@@ -196,7 +191,7 @@ public class InGameState extends GameState {
 	@Override
 	public void reset() {
 		this.bossBar.removeAll();
-		playersData.values().forEach(pData -> pData.getScoreboard().delete());
+		getGameData().getPlayersData().values().forEach(pData -> pData.deleteScoreboard());
 	}
 
 	public HashMap<UUID, IGPlayerData> getPlayersIGData() {
@@ -213,9 +208,5 @@ public class InGameState extends GameState {
 
 	public BossBar getBossBar() {
 		return bossBar;
-	}
-
-	public HashMap<UUID, PlayerData> getPlayersData() {
-		return playersData;
 	}
 }

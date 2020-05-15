@@ -30,7 +30,7 @@ import fr.maner.mssb.factory.ItemFactory;
 import fr.maner.mssb.factory.armor.ArmorFactory.ArmorType;
 import fr.maner.mssb.factory.armor.LeatherArmorFactory;
 import fr.maner.mssb.game.GameData;
-import fr.maner.mssb.game.IGPlayerData;
+import fr.maner.mssb.game.data.IGPlayerData;
 import fr.maner.mssb.runnable.itemeffect.ItemData;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.Heads;

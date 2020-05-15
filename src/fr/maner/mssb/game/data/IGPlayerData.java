@@ -1,4 +1,4 @@
-package fr.maner.mssb.game;
+package fr.maner.mssb.game.data;
 
 import java.util.UUID;
 

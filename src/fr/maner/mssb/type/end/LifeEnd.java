@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import fr.maner.mssb.entity.EntityManager;
 import fr.maner.mssb.entity.list.SpectatorEntity;
 import fr.maner.mssb.game.GameData;
-import fr.maner.mssb.game.IGPlayerData;
+import fr.maner.mssb.game.data.IGPlayerData;
 import fr.maner.mssb.type.state.InGameState;
 
 public class LifeEnd extends GameEnd {

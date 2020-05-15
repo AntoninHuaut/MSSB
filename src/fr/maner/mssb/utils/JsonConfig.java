@@ -34,7 +34,7 @@ public class JsonConfig {
 		}
 	}
 
-	private JavaPlugin pl;
+	protected JavaPlugin pl;
 	private File file = null;
 	private String fileName;
 
