@@ -21,6 +21,7 @@ import fr.maner.mssb.type.state.GameState;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.type.state.LobbyState;
 import fr.maner.mssb.utils.map.MapData;
+import fr.maner.mssb.utils.songs.SongConfig.SongEnum;
 import net.md_5.bungee.api.ChatColor;
 
 public class GameData {
@@ -34,8 +35,9 @@ public class GameData {
 		this.pl = pl;
 		this.config = new GameConfig(pl);
 		setGameState(new LobbyState(this), true);
-		
 		this.soundData = new SoundData(this);
+		
+		Bukkit.getOnlinePlayers().forEach(p -> getPlayersData().put(p.getUniqueId(), new PlayerData(p, this)));
 	}
 
 	private GameState state;
@@ -50,6 +52,8 @@ public class GameData {
 
 		getGameConfig().setBuildMode(false);
 		new StartRun(pl, this, mapData);
+		
+		soundData.initSong(SongEnum.INGAME);
 	}
 
 	public void stopGame() {
@@ -81,6 +85,7 @@ public class GameData {
 		});
 		
 		stopRunnable();
+		soundData.initSong(SongEnum.MENU);
 	}
 
 	public void createRunnable() {

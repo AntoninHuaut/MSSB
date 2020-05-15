@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
@@ -77,6 +78,8 @@ public class PlayerListener implements Listener {
 		e.setJoinMessage(String.format("§8[§a+§8] %s", p.getName()));
 		
 		gameData.getPlayersData().put(p.getUniqueId(), new PlayerData(p, gameData));
+		
+		Bukkit.getScheduler().runTaskLater(gameData.getPlugin(), () -> p.sendMessage(" §6» §7La musique des notes blocs est sur \"Voix\" si vous souhaitez baisser le volume"), 1L);
 	}
 
 	@EventHandler
