@@ -41,8 +41,7 @@ public class SoundData {
 		rsp = new RadioSongPlayer(playlist);
 		rsp.setRandom(true);
 		
-		int randomIndex = playlist.getIndex(playlist.getSongList().get(random.nextInt(playlist.getSongList().size())));
-		rsp.playSong(randomIndex);
+		rsp.playSong(random.nextInt(playlist.getSongList().size()));
 		
 		rsp.setRepeatMode(RepeatMode.ALL);
 		rsp.setCategory(SoundCategory.VOICE);
