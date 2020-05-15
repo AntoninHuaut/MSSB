@@ -68,12 +68,23 @@ public class WorldListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerDamage(EntityDamageEvent e){
+	public void onPlayerDamage(EntityDamageEvent e) {
 		if(!e.getCause().equals(DamageCause.FALL)) return;
 
 		Location loc = e.getEntity().getLocation();
-		Material matBlock = loc.clone().add(0, -1, 0).getBlock().getType();
-		if(matBlock.equals(Material.HAY_BLOCK)) {
+
+		boolean hasHayBlock = false;
+
+		for (int x = -1 ; x < 1 && !hasHayBlock; x++) {
+			for (int y = -1 ; y < 1 & !hasHayBlock; y++) {
+				Material matBlock = loc.clone().add(x, -1, y).getBlock().getType();
+
+				if (matBlock.equals(Material.HAY_BLOCK))
+					hasHayBlock = true;
+			}
+		}
+
+		if(hasHayBlock) {
 			loc.getWorld().spawnParticle(Particle.BLOCK_CRACK, loc, 150, 0.5, 0.75, 0.5, 0.25, Material.HAY_BLOCK.createBlockData());
 			e.setCancelled(true);
 		}
