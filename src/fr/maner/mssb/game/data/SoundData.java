@@ -1,9 +1,12 @@
 package fr.maner.mssb.game.data;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.xxmicloxx.NoteBlockAPI.model.FadeType;
+import com.xxmicloxx.NoteBlockAPI.model.Playlist;
 import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.SoundCategory;
 import com.xxmicloxx.NoteBlockAPI.model.playmode.MonoMode;
@@ -15,6 +18,8 @@ import fr.maner.mssb.utils.songs.SongConfig.SongEnum;
 
 public class SoundData {
 
+	private Random random = new Random();
+	
 	private GameData gameData;
 	private RadioSongPlayer rsp;
 
@@ -31,8 +36,14 @@ public class SoundData {
 	public void initSong(SongEnum song) {
 		clearSong();
 
-		rsp = new RadioSongPlayer(gameData.getGameConfig().getSongConfig().getPlaylist().get(song));
+		Playlist playlist = gameData.getGameConfig().getSongConfig().getPlaylist().get(song);
+		
+		rsp = new RadioSongPlayer(playlist);
 		rsp.setRandom(true);
+		
+		int randomIndex = playlist.getIndex(playlist.getSongList().get(random.nextInt(playlist.getSongList().size())));
+		rsp.playSong(randomIndex);
+		
 		rsp.setRepeatMode(RepeatMode.ALL);
 		rsp.setCategory(SoundCategory.VOICE);
 		rsp.setChannelMode(new MonoMode());

@@ -31,7 +31,7 @@ public class MSSB extends JavaPlugin {
 	}
 
 	private void initListeners(PluginManager pm) {
-		pm.registerEvents(new EntityListener(), this);
+		pm.registerEvents(new EntityListener(gameData), this);
 		pm.registerEvents(new PlayerListener(gameData), this);
 		pm.registerEvents(new WorldListener(gameData), this);
 		
