@@ -5,7 +5,6 @@ import fr.maner.mssb.type.state.InGameState;
 import org.bukkit.Bukkit;
 
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.UUID;
 
 public class KillEnd extends GameEnd {

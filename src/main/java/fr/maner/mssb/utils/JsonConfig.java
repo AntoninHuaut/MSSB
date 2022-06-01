@@ -82,7 +82,7 @@ public class JsonConfig {
         try {
             var content = getContent();
             if (content.isEmpty()) return null;
-            
+
             return JsonParser.parseString(content.get());
         } catch (IllegalStateException | JsonParseException e) {
             pl.getLogger().log(Level.SEVERE, ConfigErrEnum.INVALID.toString());

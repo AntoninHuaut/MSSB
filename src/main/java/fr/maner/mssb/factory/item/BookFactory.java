@@ -14,7 +14,6 @@ import org.bukkit.inventory.meta.BookMeta;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 public class BookFactory extends ItemFactory {
 
