@@ -64,13 +64,13 @@ public class SoundData {
         songEndRun.setTaskId(taskId);
     }
 
-    private class SongEndRun implements Runnable {
+    private static class SongEndRun implements Runnable {
 
         private int taskId;
-        private RadioSongPlayer oldRsp;
+        private final RadioSongPlayer oldRsp;
 
         private int tick;
-        private int fadeDuration;
+        private final int fadeDuration;
 
         public SongEndRun(RadioSongPlayer oldRsp) {
             this.oldRsp = oldRsp;

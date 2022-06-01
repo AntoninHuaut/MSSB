@@ -1,15 +1,19 @@
 package fr.maner.mssb.utils.songs;
 
 import com.google.gson.JsonArray;
+import com.xxmicloxx.NoteBlockAPI.model.Playlist;
+import com.xxmicloxx.NoteBlockAPI.model.Song;
+import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import fr.maner.mssb.utils.JsonConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 public class SongConfig extends JsonConfig {
 
-    private Map<SongEnum, Playlist> playlist = new HashMap<>();
+    private final Map<SongEnum, Playlist> playlist = new HashMap<>();
 
     public SongConfig(JavaPlugin pl) {
         super(pl, "songs/index");
@@ -34,8 +38,7 @@ public class SongConfig extends JsonConfig {
     }
 
     private void copySongIfNotExist(SongEnum type, String songName) {
-        if (getSongFile(type, songName).exists())
-            return;
+        if (getSongFile(type, songName).exists()) return;
 
         pl.saveResource(getSongPath(type, songName), false);
     }
@@ -48,14 +51,12 @@ public class SongConfig extends JsonConfig {
         return "songs" + File.separator + type + File.separator + songName + ".nbs";
     }
 
-    public HashMap<SongEnum, Playlist> getPlaylist() {
+    public Map<SongEnum, Playlist> getPlaylist() {
         return playlist;
     }
 
     public enum SongEnum {
-        INGAME,
-        MENU,
-        OTHERS;
+        INGAME, MENU, OTHERS;
 
         @Override
         public String toString() {
