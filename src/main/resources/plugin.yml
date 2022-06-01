@@ -3,7 +3,7 @@ main: fr.maner.mssb.MSSB
 version: 1.0.0
 author: Maner_
 website: https://maner.fr/
-api-version: 1.15
+api-version: 1.18
 load: POSTWORLD
 depend: [ NoteBlockAPI ]
 commands:

@@ -23,6 +23,7 @@ public class SkullFactory {
         return item;
     }
 
+    // TODO check still work
     private static void loadProfile(ItemMeta meta, String base64) {
         Class<?> profileClass = Reflection.getClass("com.mojang.authlib.GameProfile");
         Constructor<?> profileConstructor = Reflection.getDeclaredConstructor(profileClass, UUID.class, String.class);

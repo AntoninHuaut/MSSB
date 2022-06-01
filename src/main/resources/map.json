@@ -1,10 +1,12 @@
 [
   {
-    "data": {
+    "item": {
       "name": "A Freeze25",
       "author": "Freeze25",
       "material": "BRICKS",
-      "opt_SkullData": "",
+      "optSkullData": ""
+    },
+    "data": {
       "minY": 100,
       "maxY": 255,
       "radius": 32
@@ -18,11 +20,13 @@
     }
   },
   {
-    "data": {
+    "item": {
       "name": "Banquise",
       "author": "Freeze25",
       "material": "SNOW_BLOCK",
-      "opt_SkullData": "",
+      "optSkullData": ""
+    },
+    "data": {
       "minY": 105,
       "maxY": 255,
       "radius": 32
@@ -36,11 +40,13 @@
     }
   },
   {
-    "data": {
+    "item": {
       "name": "Îles flottantes",
       "author": "estebanane99 / Loupyboy / Xelasil",
       "material": "DIRT",
-      "opt_SkullData": "",
+      "optSkullData": ""
+    },
+    "data": {
       "minY": 55,
       "maxY": 75,
       "radius": 40

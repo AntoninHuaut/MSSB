@@ -22,19 +22,16 @@ public class MapData {
     private ItemStack is;
     private Location loc;
 
-    private final int minY;
-    private final int maxY;
-    private final int radius;
+    private int minY;
+    private int maxY;
+    private int radius;
 
-    public MapData(String author, String name, int minY, int maxY, int radius) {
+    public MapData(String author, String name) {
         this.author = author;
         this.name = name;
-        this.minY = minY;
-        this.maxY = maxY;
-        this.radius = radius;
     }
 
-    public MapData setItem(String material, String opt_SkullData) {
+    public MapData setItem(String material, String optSkullData) {
         Material mat;
 
         try {
@@ -47,14 +44,26 @@ public class MapData {
 
         ItemFactory itemFactory;
 
-        if (mat.equals(Material.PLAYER_HEAD) && !opt_SkullData.isEmpty()) {
-            itemFactory = new ItemFactory(SkullFactory.buildFromBase64(opt_SkullData));
+        if (mat.equals(Material.PLAYER_HEAD) && !optSkullData.isEmpty()) {
+            itemFactory = new ItemFactory(SkullFactory.buildFromBase64(optSkullData));
         } else {
             itemFactory = new ItemFactory(mat);
         }
 
         is = itemFactory.setName("§r§f" + name).addLore("§7§oRéalisé par " + author).build();
 
+        return this;
+    }
+
+    public MapData setConfig(int minY, int maxY, int radius) {
+        this.minY = minY;
+        this.maxY = maxY;
+        this.radius = radius;
+        return this;
+    }
+
+    public MapData setLoc(Location loc) {
+        this.loc = loc;
         return this;
     }
 
@@ -114,10 +123,6 @@ public class MapData {
         boolean belowCheck = !bellowDeny.contains(below.getType()) && (bellowAllow.contains(below.getType()) || (below.getType().isSolid() && below.getType().isOccluding()));
 
         return belowCheck && above.getType() == Material.AIR && legs.getType() == Material.AIR;
-    }
-
-    public void setLoc(Location loc) {
-        this.loc = loc;
     }
 
     public ItemStack getIs() {

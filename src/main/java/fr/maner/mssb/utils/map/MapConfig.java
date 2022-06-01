@@ -32,10 +32,12 @@ public class MapConfig extends JsonConfig {
             JsonObject mapObj = element.getAsJsonObject();
 
             JsonElement dataElement = get(mapObj, "data");
+            JsonElement itemElement = get(mapObj, "item");
             JsonElement locElement = get(mapObj, "loc");
-            if (!dataElement.isJsonObject() || !locElement.isJsonObject()) continue;
+            if (!dataElement.isJsonObject() || !locElement.isJsonObject() || !itemElement.isJsonObject()) continue;
 
-            JsonObject itemObj = dataElement.getAsJsonObject();
+            JsonObject dataObj = dataElement.getAsJsonObject();
+            JsonObject itemObj = itemElement.getAsJsonObject();
             JsonObject locObj = locElement.getAsJsonObject();
 
             Location loc = new Location(world,
@@ -43,10 +45,11 @@ public class MapConfig extends JsonConfig {
                     getFloat(locObj, "yaw"), getFloat(locObj, "pitch"));
             loc.add(0.5, 0, 0.5);
 
-            MapData mapData = new MapData(getString(itemObj, "author"), getString(itemObj, "name"),
-                    getInt(itemObj, "minY"), getInt(itemObj, "maxY"), getInt(itemObj, "radius"));
+            MapData mapData = new MapData(getString(dataObj, "author"), getString(dataObj, "name"));
 
-            mapData.setItem(getString(itemObj, "material"), getString(itemObj, "opt_SkullData")).setLoc(loc);
+            mapData.setItem(getString(dataObj, "material"), getString(dataObj, "optSkullData"))
+                    .setConfig(getInt(itemObj, "minY"), getInt(itemObj, "maxY"), getInt(itemObj, "radius"))
+                    .setLoc(loc);
 
             mapDataList.add(mapData);
         }
