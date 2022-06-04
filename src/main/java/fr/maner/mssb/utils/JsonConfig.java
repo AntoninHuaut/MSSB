@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -93,7 +94,7 @@ public class JsonConfig {
 
     private Optional<String> getContent() {
         try {
-            return Optional.of(new String(Files.readAllBytes(Paths.get(file.toURI()))));
+            return Optional.of(Files.readString(Paths.get(file.toURI())));
         } catch (IOException e) {
             pl.getLogger().log(Level.SEVERE, ConfigErrEnum.READ.toString());
             e.printStackTrace();
