@@ -13,9 +13,10 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     compileOnly("com.github.koca2000:NoteBlockAPI:1.6.1")
+    implementation("fr.mrmicky:fastboard:1.2.1")
     implementation("org.jetbrains:annotations:23.0.0")
 }
 
-tasks.withType<JavaCompile>() {
+tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }

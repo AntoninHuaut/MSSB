@@ -1,9 +1,9 @@
 package fr.maner.mssb.game.data;
 
 import fr.maner.mssb.game.GameData;
-import fr.maner.mssb.scoreboard.FastBoard;
 import fr.maner.mssb.type.state.InGameState;
 import fr.maner.mssb.utils.ConvertDate;
+import fr.mrmicky.fastboard.FastBoard;
 import org.bukkit.entity.Player;
 
 public class PlayerData {
