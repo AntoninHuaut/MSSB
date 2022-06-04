@@ -1,5 +1,6 @@
 package fr.maner.mssb.type.game;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -23,7 +24,7 @@ public class KBMode extends GameType {
      * KBMode => https://docs.google.com/spreadsheets/d/1TE4CJOGk0nWGjtyo6Eb5DUJozxaGZXoqsjmYE3z3KMI/
      */
     @Override
-    public void callAfterPlayerDamageBy_PlayerProjectile(EntityDamageByEntityEvent e) {
+    public void getDamageByPlayerOrProjectile(EntityDamageByEntityEvent e) {
         Entity damager = e.getDamager();
         double totalDamage = e.getFinalDamage() * getKbMultiplier();
 

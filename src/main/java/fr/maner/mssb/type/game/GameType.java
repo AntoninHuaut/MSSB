@@ -20,9 +20,11 @@ public abstract class GameType implements Listener {
     public void modifyDamageByEntity(EntityDamageByEntityEvent e) {
     }
 
-    public abstract String getConfigMessage();
+    public void getDamageByPlayerOrProjectile(EntityDamageByEntityEvent e) {
 
-    public abstract void callAfterPlayerDamageBy_PlayerProjectile(EntityDamageByEntityEvent e);
+    }
+
+    public abstract String getConfigMessage();
 
     public abstract void regenPlayer(Player p);
 

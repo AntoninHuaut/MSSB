@@ -91,6 +91,7 @@ public class InGameState extends GameState {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player victim = e.getEntity();
+        resetFire(victim);
         UUID victimUUID = victim.getUniqueId();
         IGPlayerData victimData = playersIGData.get(victimUUID);
 
@@ -160,8 +161,9 @@ public class InGameState extends GameState {
 
         getGameData().getGameConfig().getGameType().modifyDamageByEntity(e);
 
-        if (e.getDamager().getType().equals(EntityType.PLAYER) && e.getCause().equals(DamageCause.PROJECTILE)) {
-            getGameData().getGameConfig().getGameType().callAfterPlayerDamageBy_PlayerProjectile(e);
+        if (e.getDamager().getType().equals(EntityType.PLAYER) || e.getCause().equals(DamageCause.PROJECTILE)) {
+            getGameData().getGameConfig().getGameType().getDamageByPlayerOrProjectile(e);
+
         }
     }
 
@@ -188,6 +190,14 @@ public class InGameState extends GameState {
     public void reset() {
         this.bossBar.removeAll();
         getGameData().getPlayersData().values().forEach(PlayerData::deleteScoreboard);
+    }
+
+    private void resetFire(Player p) {
+        if (p.getFireTicks() > 0) {
+            p.setFireTicks(0);
+            p.setVisualFire(true);
+            Bukkit.getScheduler().runTaskLater(getGameData().getPlugin(), () -> p.setVisualFire(false), 1);
+        }
     }
 
     public Map<UUID, IGPlayerData> getPlayersIGData() {

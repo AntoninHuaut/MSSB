@@ -35,7 +35,9 @@ public class WolfEntity extends PlayableEntity {
 
     @Override
     public void initEntity() {
-        getGameData().getItemEffectRun().addPotionEffect(getMainWeapon(), new PotionEffect(PotionEffectType.SPEED, 20, 0, false, false));
+        getGameData().getItemEffectRun().addPotionEffect(getMainWeapon(),
+                new PotionEffect(PotionEffectType.SPEED, 20, 0, false, false)
+        );
     }
 
 }

@@ -25,14 +25,18 @@ public class WorldListener implements Listener {
         World w = Bukkit.getWorlds().get(0);
 
         w.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+        w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        w.setGameRule(GameRule.DO_ENTITY_DROPS, false);
         w.setGameRule(GameRule.DO_FIRE_TICK, false);
+        w.setGameRule(GameRule.DO_MOB_LOOT, false);
         w.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        w.setGameRule(GameRule.DO_TILE_DROPS, false);
         w.setGameRule(GameRule.MOB_GRIEFING, false);
         w.setGameRule(GameRule.NATURAL_REGENERATION, false);
-        w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        w.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
 
         w.setGameRule(GameRule.KEEP_INVENTORY, true);
-        w.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+        w.setGameRule(GameRule.FORGIVE_DEAD_PLAYERS, true);
 
         w.setTime(6000L);
     }

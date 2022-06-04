@@ -35,10 +35,6 @@ public class NormalMode extends GameType {
     }
 
     @Override
-    public void callAfterPlayerDamageBy_PlayerProjectile(EntityDamageByEntityEvent e) {
-    }
-
-    @Override
     public void regenPlayer(Player p) {
         p.setHealth(Math.min(p.getHealth() + getRegenHealth(), p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue()));
     }

@@ -19,6 +19,7 @@ public class ZombieEntity extends PlayableEntity {
 
     private static final String COLOR = "§3";
     private static final String NAME = "Zombie";
+    private static final int POTION_EFFECT_DURATION_SECOND = 50; // 50 ticks => 2.5s
 
     public ZombieEntity(GameData gameData) {
         super(gameData, COLOR, NAME, Heads.ZOMBIE);
@@ -40,7 +41,7 @@ public class ZombieEntity extends PlayableEntity {
     public void playableEntityFightEntity(Player damager, Entity victim) {
         if (!(victim instanceof Player)) return;
 
-        ((Player) victim).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
-        damager.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5, 0));
+        ((Player) victim).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, POTION_EFFECT_DURATION_SECOND, 0));
+        damager.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, POTION_EFFECT_DURATION_SECOND, 0));
     }
 }

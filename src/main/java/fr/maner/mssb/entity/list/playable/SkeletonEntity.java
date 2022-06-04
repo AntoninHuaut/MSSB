@@ -19,6 +19,7 @@ public class SkeletonEntity extends PlayableEntity {
 
     private static final String COLOR = "§7";
     private static final String NAME = "Squelette";
+    private static final int FIRE_DURATION_SECOND = 100; // 100 ticks => 5s
 
     public SkeletonEntity(GameData gameData) {
         super(gameData, COLOR, NAME, Heads.SKELETON);
@@ -44,7 +45,7 @@ public class SkeletonEntity extends PlayableEntity {
         if (!e.getProjectile().getType().equals(EntityType.ARROW)) return;
 
         if (random.nextInt(4) == 0) {
-            e.getProjectile().setFireTicks(20 * 5);
+            e.getProjectile().setFireTicks(FIRE_DURATION_SECOND);
         }
     }
 }

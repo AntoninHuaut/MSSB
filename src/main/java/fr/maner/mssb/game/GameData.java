@@ -68,7 +68,7 @@ public class GameData {
         String winnerMsg = getGameConfig().getGameEnd().getWinnerMessage(inGameState);
 
         Bukkit.getOnlinePlayers().forEach(p -> {
-            p.sendTitle(ChatColor.translateAlternateColorCodes('&', "&eFin de partie !"), ChatColor.translateAlternateColorCodes('&', winnerMsg == null ? "" : winnerMsg), 10, 70, 20);
+            p.sendTitle("§eFin de partie !", ChatColor.translateAlternateColorCodes('&', winnerMsg == null ? "" : winnerMsg), 10, 70, 20);
             p.playSound(p.getLocation(), Sound.ENTITY_WITHER_DEATH, 0.25F, 1F);
             lobbyState.initPlayer(p);
             p.openBook(book);
