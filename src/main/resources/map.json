@@ -1,20 +1,20 @@
 [
   {
     "item": {
-      "name": "Île caverne",
+      "name": "A Freeze25",
       "author": "Freeze25",
       "material": "BRICKS",
       "optSkullData": ""
     },
     "data": {
-      "minY": 120,
+      "minY": 100,
       "maxY": 255,
       "radius": 32
     },
     "loc": {
-      "x": 1000,
-      "y": 128,
-      "z": 1000,
+      "x": -2054,
+      "y": 108,
+      "z": -2004,
       "pitch": 0,
       "yaw": 0
     }
@@ -27,14 +27,14 @@
       "optSkullData": ""
     },
     "data": {
-      "minY": 118,
+      "minY": 105,
       "maxY": 255,
       "radius": 32
     },
     "loc": {
-      "x": 1000,
-      "y": 128,
-      "z": 0,
+      "x": 1927,
+      "y": 116,
+      "z": -2052,
       "pitch": 0,
       "yaw": 0
     }
@@ -47,34 +47,14 @@
       "optSkullData": ""
     },
     "data": {
-      "minY": 92,
-      "maxY": 146,
+      "minY": 55,
+      "maxY": 75,
       "radius": 40
     },
     "loc": {
-      "x": -990,
-      "y": 110,
-      "z": -994,
-      "pitch": 0,
-      "yaw": 0
-    }
-  },
-  {
-    "item": {
-      "name": "Île bambou",
-      "author": "je sais plus",
-      "material": "LIME_CONCRETE",
-      "optSkullData": ""
-    },
-    "data": {
-      "minY": 115,
-      "maxY": 140,
-      "radius": 50
-    },
-    "loc": {
-      "x": -1000,
-      "y": 128,
-      "z": 4,
+      "x": -100000,
+      "y": 89,
+      "z": 41,
       "pitch": 0,
       "yaw": 0
     }
